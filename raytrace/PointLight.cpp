@@ -29,7 +29,14 @@ bool PointLight::sample(const float3& pos, float3& dir, float3& L) const
   // Hint: Construct a shadow ray using the Ray datatype. Trace it using the
   //       pointer to the ray tracer.
 
-  return false;
+	dir = normalize(light_pos - pos);
+
+	float distance = optix::length(light_pos - pos);
+	
+	L = intensity / (pow(distance, 2));
+
+
+  return true;
 }
 
 bool PointLight::emit(Ray& r, HitInfo& hit, float3& Phi) const

@@ -1,0 +1,15 @@
+/.idea
+/.vs
+/3rdparty
+/bin
+/cmake
+/cmake-build-debug
+/debug
+/models
+/raytrace/Debug
+/raytrace/Release
+/SOIL
+CMakeLists.txt
+configuration.h
+configuration.h.in
+render.sln

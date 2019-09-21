@@ -34,5 +34,30 @@ float3 Lambertian::shade(const Ray& r, HitInfo& hit, bool emit) const
   //
   // Hint: Call the sample function associated with each light in the scene.
 
+  float3 final = make_float3(0,0,0);
+  
+  for (int i = 0; i < lights.size(); i++) {
+	  float3 accumulator = make_float3(0, 0, 0);
+	  float3 direction = make_float3(0, 0, 0);
+	  float3 intensity = make_float3(0, 0, 0);
+
+	  bool not_occluded = lights[i]->sample(hit.position, direction, intensity);
+
+	  if (not_occluded) {
+		  float3 diffuse = rho_d * M_1_PIf * intensity * dot(hit.shading_normal, direction);
+
+		  float cosine = dot(hit.shading_normal, direction) / dot(normalize(hit.shading_normal), normalize(direction));
+
+		  if (cosine > 0) {
+			  accumulator += diffuse * cosine;
+		  }
+	  }
+
+	  final += accumulator;
+  }
+  result = final * rho_d;
+
+
+
   return result + Emission::shade(r, hit, emit);
 }
