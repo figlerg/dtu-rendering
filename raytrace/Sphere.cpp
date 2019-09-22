@@ -38,7 +38,35 @@ bool Sphere::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
   //        (b) There is no need to handle the case where the 
   //            discriminant is zero separately.
 
-  return false;
+
+
+	// directions should be normalized, right? otherwise I would have to divide all by length
+	// pen and paper calculations, check with slides!
+
+	float3 MO = r.origin - center;
+	float p = 2 * dot(r.direction, MO);
+	float t_1 = -p / 2 - sqrt(pow((p / 2), 2) - pow(length(MO), 2) + pow(radius, 2));
+	float t_2 = -p / 2 + sqrt(pow((p / 2), 2) - pow(length(MO), 2) + pow(radius, 2));
+
+	if (t_1 >= r.tmin && t_1 <= r.tmax) {
+		hit.dist = t_1;
+		hit.position = r.origin + t_1 * r.direction;
+	}
+	else if (t_2 >= r.tmin && t_2 <= r.tmax) {
+		hit.dist = t_2;
+		hit.position = r.origin + t_2 * r.direction;
+	}
+	else
+	{
+		return false;
+	}
+
+	// these work for both cases
+	hit.has_hit = true;
+	hit.material = &material;
+	hit.geometric_normal = normalize(hit.position - center);
+	hit.shading_normal = normalize(hit.position - center); // what's the difference?
+	return true;
 }
 
 void Sphere::transform(const Matrix4x4& m)
