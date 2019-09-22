@@ -21,6 +21,22 @@ bool intersect_triangle(const Ray& ray,
   // Note that OptiX also has an implementation, so you can get away
   // with not implementing this function. However, I recommend that
   // you implement it for completeness.
+	//if(abs(dot(ray.direction, n) <= 1e-07)) 
+	//	return false;
+
+	//float t_prime = dot(v0 - ray.origin, n) / dot(ray.direction, n);
+	//float3 e0 = v1 - v2;
+	//float3 e1 = v0 - v2;
+
+	//// TODO ask why we already have v, w?
+
+	//float v_new = dot(cross((v0 - ray.origin), ray.direction), make_float3(1, 0, 0)) / dot(ray.direction, n);	
+	//float w_new = dot(cross((v0 - ray.origin), ray.direction), make_float3(1, 0, 0)) / dot(ray.direction, n);
+
+	//float u = 1 - v - w;
+
+	//if (v >= 0 && w >= 0 && u <= 0)
+	//	return true;
 
   return false;
 }
@@ -53,8 +69,26 @@ bool Triangle::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) cons
   //       Note that you need to do scope resolution (optix:: or just :: in front
   //       of the function name) to choose between the OptiX implementation and
   //       the function just above this one.
+	
+	float3 n;
+	float t, v, w;
 
-  return false;
+	bool is_hit = optix::intersect_triangle(r, v0 , v1, v2, n, t, v, w);
+
+	if (is_hit && (t >= r.tmin & t <= r.tmax)) {
+		hit.dist = t;
+		hit.position = r.origin + r.direction * t;
+		hit.geometric_normal = n;
+		hit.shading_normal = n;
+		hit.material = &material;
+		hit.has_hit = true; // otherwise it overwrites hitinfo wrongly
+
+		// TODO looks wrong!
+
+		return true;
+		}
+
+	return false;
 }
 
 void Triangle::transform(const Matrix4x4& m) 
