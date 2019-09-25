@@ -55,12 +55,14 @@ bool Accelerator::closest_hit(optix::Ray& r, HitInfo& hit) const
   //       the scene. See the functions below this one for inspiration.
 
   unsigned int num_of_prims = primitives.size();
+
   for (unsigned int i = 0; i < num_of_prims; i++) {
 	  AccObj* obj = primitives[i];
+	  
+	  if (obj->geometry->intersect(r, hit, obj->prim_idx)) {
+		  r.tmax = min(hit.dist, r.tmax);
+	  }
 
-	  obj->geometry->intersect(r, hit, obj->prim_idx);
-
-	  r.tmax = min(hit.dist, r.tmax); 
   }
 
   return hit.has_hit;

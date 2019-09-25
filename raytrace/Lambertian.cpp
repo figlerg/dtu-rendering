@@ -46,16 +46,15 @@ float3 Lambertian::shade(const Ray& r, HitInfo& hit, bool emit) const
 	  if (not_occluded) {
 		  float3 diffuse = rho_d * M_1_PIf * intensity * dot(hit.shading_normal, direction);
 
-		  float cosine = dot(hit.shading_normal, direction) / dot(normalize(hit.shading_normal), normalize(direction));
-
+		  float cosine = dot(hit.shading_normal, direction);
 		  if (cosine > 0) {
-			  accumulator += diffuse * cosine;
+			  accumulator += diffuse;
 		  }
 	  }
 
 	  final += accumulator;
   }
-  result = final * rho_d;
+  result = final;
 
 
 

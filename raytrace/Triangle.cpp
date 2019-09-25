@@ -73,7 +73,7 @@ bool Triangle::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) cons
 	float3 n;
 	float t, v, w;
 
-	bool is_hit = optix::intersect_triangle(r, v0 , v1, v2, n, t, v, w);
+	bool is_hit = optix::intersect_triangle(r, v0, v1, v2, n, t, v, w);
 
 	if (is_hit && (t >= r.tmin & t <= r.tmax)) {
 		hit.dist = t;

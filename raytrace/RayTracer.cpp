@@ -24,7 +24,16 @@ bool RayTracer::trace_reflected(const Ray& in, const HitInfo& in_hit, Ray& out, 
   //
   // Hints: (a) There is a reflect function available in the OptiX math library.
   //        (b) Set out_hit.ray_ior and out_hit.trace_depth.
-  return false;
+
+	//float3 out_dir = reflect(in.direction, in_hit.shading_normal);
+	//out = Ray(in_hit.position, out_dir, 0, 1e-04); // try whether tmax is ok
+
+	//out_hit.ray_ior = in_hit.ray_ior;
+	//out_hit.trace_depth = in_hit.trace_depth + 1;
+
+
+ // return trace_to_closest(out, out_hit);
+	return false;
 }
 
 bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, HitInfo& out_hit) const

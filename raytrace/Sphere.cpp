@@ -48,6 +48,12 @@ bool Sphere::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
 	float t_1 = -p / 2 - sqrt(pow((p / 2), 2) - pow(length(MO), 2) + pow(radius, 2));
 	float t_2 = -p / 2 + sqrt(pow((p / 2), 2) - pow(length(MO), 2) + pow(radius, 2));
 
+	//float a = 1;
+	//float c = pow(length(r.origin - center), 2) - pow(radius, 2);
+	//float b_over_2 = dot(r.origin - center, r.direction);
+	//float inside_discriminant = pow(b_over_2, 2) - c;
+	//// check if smaller 0 necessary?
+
 	if (t_1 >= r.tmin && t_1 <= r.tmax) {
 		hit.dist = t_1;
 		hit.position = r.origin + t_1 * r.direction;
@@ -57,11 +63,11 @@ bool Sphere::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
 		hit.position = r.origin + t_2 * r.direction;
 	}
 	else
-	{
+	{	
 		return false;
 	}
 
-	// these work for both cases
+	// these work for both hit cases
 	hit.has_hit = true;
 	hit.material = &material;
 	hit.geometric_normal = normalize(hit.position - center);
