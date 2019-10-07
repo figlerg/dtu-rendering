@@ -25,8 +25,8 @@ bool RayTracer::trace_reflected(const Ray& in, const HitInfo& in_hit, Ray& out, 
   // Hints: (a) There is a reflect function available in the OptiX math library.
   //        (b) Set out_hit.ray_ior and out_hit.trace_depth.
 
-	float3 out_dir = reflect(in.direction, in_hit.shading_normal);
-	out = Ray(in_hit.position, out_dir, 0, 1e-04); // try whether tmax is ok
+	float3 out_dir = reflect(in.direction, in_hit.geometric_normal);
+	out = Ray(in_hit.position, out_dir, 0, 1e-04); // why not change tmax?
 
 	out_hit.ray_ior = in_hit.ray_ior;
 	out_hit.trace_depth = in_hit.trace_depth + 1;
@@ -50,7 +50,21 @@ bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, 
   // Hints: (a) There is a refract function available in the OptiX math library.
   //        (b) Set out_hit.ray_ior and out_hit.trace_depth.
   //        (c) Remember that the function must handle total internal reflection.
-  return false;
+	float3 out_dir = make_float3(0, 0, 0);
+	bool tir = !refract(out_dir, in.direction, in_hit.geometric_normal, in_hit.ray_ior);
+
+	if (tir) {
+		return trace_reflected(in, in_hit, out, out_hit);
+	}
+
+	out = Ray(in_hit.position, out_dir, 0, 1e-04); // try whether tmax is ok
+
+	float3 normal = make_float3(0, 0, 0);
+	out_hit.ray_ior = get_ior_out(in, in_hit, normal);
+	out_hit.trace_depth = in_hit.trace_depth + 1;
+
+
+	return trace_to_closest(out, out_hit);
 }
 
 bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, HitInfo& out_hit, float& R) const

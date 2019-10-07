@@ -36,5 +36,36 @@ float3 Phong::shade(const Ray& r, HitInfo& hit, bool emit) const
   //
   // Hint: Call the sample function associated with each light in the scene.
 
+  float3 final = make_float3(0, 0, 0);
+
+  float3 result;
+
+  for (int i = 0; i < lights.size(); i++) {
+	  float3 accumulator = make_float3(0, 0, 0);
+	  float3 direction = make_float3(0, 0, 0);
+	  float3 intensity = make_float3(0, 0, 0);
+
+	  bool not_occluded = lights[i]->sample(hit.position, direction, intensity);
+
+	  if (not_occluded) {
+		  float sthg = dot(normalize(- hit.position), reflect(r.direction, hit.shading_normal));
+		  float3 new_term = rho_s * (s + 2) * 0.5 * M_1_PIf * pow(sthg, s);
+		  float3 diffuse = (rho_d * M_1_PIf + new_term) * intensity * dot(hit.shading_normal, direction);
+
+		  float cosine = dot(hit.shading_normal, direction);
+		  if (cosine > 0) {
+			  accumulator += diffuse;
+		  }
+	  }
+
+	  final += accumulator;
+  }
+  result = final;
+
+
+
+  return result + Emission::shade(r, hit, emit);
+
+
   return Lambertian::shade(r, hit, emit);
 }
