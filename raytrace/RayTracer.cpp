@@ -51,16 +51,17 @@ bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, 
   //        (b) Set out_hit.ray_ior and out_hit.trace_depth.
   //        (c) Remember that the function must handle total internal reflection.
 	float3 out_dir = make_float3(0, 0, 0);
-	bool tir = !refract(out_dir, in.direction, in_hit.geometric_normal, in_hit.ray_ior);
+	float3 normal = make_float3(0, 0, 0);
+	float out_ior = get_ior_out(in, in_hit, normal);
+	bool tir = !refract(out_dir, in.direction, normal, out_ior / in_hit.ray_ior);
 
 	if (tir) {
-		return trace_reflected(in, in_hit, out, out_hit);
+		return false;
 	}
 
-	out = Ray(in_hit.position, out_dir, 0, 1e-04); // try whether tmax is ok
+	out = Ray(in_hit.position, out_dir, 0, 1e-04);
 
-	float3 normal = make_float3(0, 0, 0);
-	out_hit.ray_ior = get_ior_out(in, in_hit, normal);
+	out_hit.ray_ior = out_ior;
 	out_hit.trace_depth = in_hit.trace_depth + 1;
 
 
