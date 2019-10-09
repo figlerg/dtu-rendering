@@ -48,7 +48,7 @@ float3 Phong::shade(const Ray& r, HitInfo& hit, bool emit) const
 	  bool not_occluded = lights[i]->sample(hit.position, direction, intensity);
 
 	  if (not_occluded) {
-		  float sthg = dot(normalize(-r.direction), reflect(-direction, hit.shading_normal));
+		  float sthg = fmax(dot(normalize(-r.direction), reflect(-direction, hit.shading_normal)),0);
 		  float3 new_term = rho_s * (s + 2) * 0.5 * M_1_PIf * pow(sthg, s);
 		  float3 diffuse = (rho_d * M_1_PIf + new_term) * intensity * dot(hit.shading_normal, direction);
 
