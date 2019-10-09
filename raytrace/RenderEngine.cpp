@@ -75,6 +75,8 @@ RenderEngine::RenderEngine()
   shaders.push_back(&mc_glossy);                             // number key 3 (path tracing shader)
 }
 
+// argc is argument count -> how many files to expect
+// argv is argument vector -> actual values (filenames in this case)
 void RenderEngine::load_files(int argc, char** argv)
 {
   if(argc > 1)
