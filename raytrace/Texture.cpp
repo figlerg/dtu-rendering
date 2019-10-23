@@ -52,19 +52,34 @@ float4 Texture::sample_nearest(const float3& texcoord) const
   float s = u - floor(u);
   float t = v - floor(v);
 
-  float a = s * width;
-  float b = t * height;
+  int a = int(s * width);
+  //int b = int((1 - t) * height);
+  int b = height- int(t*height) -1;
 
-  int idx_x = roundf(a);
-  int idx_y = roundf(b);
+  //int a = int(s * width + 0.5);
+  //int b = int((1 - t) * height + 0.5) - 1;
+  //or use (int) (s*width + 0.5) % width (actually closest)
+  // otherwise you try to access index 512 of array 0-511. like this it starts again at 0
 
-  int idx = (height - idx_y) * width + idx_x;
 
-  float4 texel_color = fdata[idx];
-  return texel_color;
+  int idx = (int) b * width + a;
+  //int idx = (int) b * width + a % (width*height);
 
-  // what now
+  //if (idx >= (width) * (height)) return make_float4(1, 1, 1, 1);
+  //if ( idx < 0) return make_float4(0, 0, 0, 0);
 
+  return fdata[idx];
+
+
+	//float s = texcoord.x - floor(texcoord.x);
+	//float t = texcoord.y - floor(texcoord.y);
+	//s = s < 0 ? s + 1 : s;
+	//t = t < 0 ? t + 1 : t;
+
+	//int a = roundf((1 - s) * height);
+	//int b = roundf(t * width) * height;
+	//float4 texel_color = fdata[a + b];
+	//return texel_color;
   
   // Implement texture look-up of nearest texel.
   //
@@ -86,21 +101,6 @@ float4 Texture::sample_linear(const float3& texcoord) const
 {
   if(!fdata)
     return make_float4(0.0f);
-
-  float u = texcoord.x;
-  float v = texcoord.y;
-
-  float s = u - floor(u);
-  float t = v - floor(v);
-
-  float a = s * width;
-  float b = t * height;
-  // until here it's the same thing
-
-
-  int idx_x = round(a);
-  int idx_y = round(b);
-  int idx = (height - idx_y - 1) * width + idx_x;
 
   //float4 texel_color = fdata[idx];
 
