@@ -53,8 +53,21 @@ float4 Texture::sample_nearest(const float3& texcoord) const
   float t = v - floor(v);
 
   int a = int(s * width);
-  //int b = int((1 - t) * height);
-  int b = height- int(t*height) -1;
+  int b = height- int(t*height) -1; // my original one
+  int idx = (int)b * width + a;
+
+
+  //float a = s * width;
+  //float b = t * height; // slides
+  //int U = (int)(a + 0.5) % width;
+  //int V = (int)(b + 0.5) % height;
+  //int idx = U + V * width;
+
+
+
+
+
+
 
   //int a = int(s * width + 0.5);
   //int b = int((1 - t) * height + 0.5) - 1;
@@ -62,7 +75,6 @@ float4 Texture::sample_nearest(const float3& texcoord) const
   // otherwise you try to access index 512 of array 0-511. like this it starts again at 0
 
 
-  int idx = (int) b * width + a;
   //int idx = (int) b * width + a % (width*height);
 
   //if (idx >= (width) * (height)) return make_float4(1, 1, 1, 1);
@@ -104,8 +116,28 @@ float4 Texture::sample_linear(const float3& texcoord) const
 
   //float4 texel_color = fdata[idx];
 
+  float u = texcoord.x;
+  float v = texcoord.y;
 
-  //return texel_color;
+  float s = u - floor(u);
+  float t = v - floor(v);
+
+  int a = int(s * width);
+  //int b = int((1 - t) * height);
+  int b = height - int(t * height) - 1;
+
+  float4 t_00 = fdata[(int)b * width + a];
+  float4 t_01 = fdata[(int)b * width + (a + 1) % width];
+  float4 t_10 = fdata[(int)(b + 1) % height * width + a];
+  float4 t_11 = fdata[(int)(b + 1) % height * width + (a + 1) % width];
+
+  float c1 = s * width - floor(s * width);
+  float c2 = t * height - floor(t * height);
+   
+  float4 texel_color = bilerp(t_00, t_01, t_10, t_11, c1, c2);
+
+  //return sample_nearest(texcoord);
+  return texel_color;
 
 
   // Implement texture look-up which returns the bilinear interpolation of
@@ -123,9 +155,6 @@ float4 Texture::sample_linear(const float3& texcoord) const
   // Hint: Use three lerp operations (or one bilerp) to perform the
   //       bilinear interpolation.
 
-
-
-  return sample_nearest(texcoord);
 }
 
 float4 Texture::look_up(unsigned int idx) const
