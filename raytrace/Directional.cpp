@@ -28,6 +28,21 @@ bool Directional::sample(const float3& pos, float3& dir, float3& L) const
   // light_dir  (direction of the emitted light)
   // emission   (radiance of the emitted light)
 
+	dir = normalize(-light_dir);
+	//float cutoff = length(pos - light_pos) - 0.0001;
+
+	Ray shadow_ray = Ray(pos, dir, 0, 0.001);
+	HitInfo info = HitInfo();
+
+	bool shadowed = tracer->trace_to_any(shadow_ray, info);
+
+
+	// float distance = optix::length(dir);
+	L = emission;
+
+	return !shadowed;
+
+
   return false;
 }
 

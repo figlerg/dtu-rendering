@@ -60,7 +60,7 @@ bool Accelerator::closest_hit(optix::Ray& r, HitInfo& hit) const
 	  AccObj* obj = primitives[i];
 	  
 	  if (obj->geometry->intersect(r, hit, obj->prim_idx)) {
-		  r.tmax = min(hit.dist, r.tmax);
+		  r.tmax = fmin(hit.dist, r.tmax);
 	  }
 
   }

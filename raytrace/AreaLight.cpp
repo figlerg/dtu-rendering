@@ -9,6 +9,8 @@
 #include "cdf_bsearch.h"
 #include "HitInfo.h"
 #include "AreaLight.h"
+#include "int_pow.h"
+
 
 using namespace optix;
 
@@ -17,6 +19,36 @@ bool AreaLight::sample(const float3& pos, float3& dir, float3& L) const
 {
   const IndexedFaceSet& normals = mesh->normals;
   L = make_float3(0.0f);
+
+  float3 light_pos = mesh->compute_bbox().center();
+  float dist = length(light_pos - pos);
+
+  dir = normalize(light_pos - pos);
+  float cutoff = length(pos - light_pos) - 0.0001;
+
+  Ray shadow_ray = Ray(pos, dir, 0, 0.001, cutoff);
+  HitInfo info = HitInfo();
+
+  bool shadowed = tracer->trace_to_any(shadow_ray, info);
+
+
+  float distance = optix::length(light_pos - pos);
+  //L = intensity / (pow(distance, 2));
+
+
+  for(int i = 0; i < mesh->geometry.no_faces(); i++) {
+	  float3 emission = get_emission(i);
+	  uint3 face = normals.face(i);
+	  float3 normal = normalize(normals.vertex(face.x) + normals.vertex(face.y) + normals.vertex(face.z));
+		
+	  L += dot(-dir, normal) * emission * mesh->face_areas[i];
+  }
+  L /= int_pow(dist, 2);
+
+
+  return !shadowed;
+
+
 
   // Compute output and return value given the following information.
   //

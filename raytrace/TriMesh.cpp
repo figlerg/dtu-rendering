@@ -53,6 +53,34 @@ bool TriMesh::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
   //        vertex normals for computing the shading normal. If not, use
   //        the geometric normal as shading normal.
 
+
+  float3 n;
+  float t, v, w;
+  bool has_hit = optix::intersect_triangle(r, geometry.vertex(face.x), geometry.vertex(face.y), geometry.vertex(face.z), n, t, v, w);
+  
+  if (has_hit) {
+	  hit.has_hit = true;
+	  hit.dist = t;
+	  hit.position = r.origin + r.direction * t;
+	  hit.geometric_normal = normalize(n);
+	  hit.material = &materials[mat_idx[prim_idx]];
+	  hit.shading_normal = normalize(n);
+
+
+	  //float u = 1 - v - w;
+	  //hit.shading_normal = normalize(u * normals.vertex(face.x) + v * normals.vertex(face.y) + w * normals.vertex(face.z));
+	  //// hit.shading_normal = n;
+
+	  //
+	  //if (hit.material->has_texture) {
+		 // 
+		 // hit.texcoord = u * texcoords.vertex(face.x) + v * texcoords.vertex(face.y) + w * texcoords.vertex(face.z);
+		 // // no normalize() here?
+	  //}
+
+	  return true;
+  }
+
   return false;
 }
 
