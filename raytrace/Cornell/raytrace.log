@@ -1,7 +1,8 @@
-﻿  Accelerator.cpp
+﻿  RayCaster.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\RayCaster.cpp(39,20): warning C4018:  '<': signed/unsigned mismatch
   Generating code
-  19 of 1680 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    21 functions had inline decision re-evaluated but remain unchanged
+  2 of 1687 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    14 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Cornell\raytrace.exe

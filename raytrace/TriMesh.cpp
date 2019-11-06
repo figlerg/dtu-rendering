@@ -64,12 +64,14 @@ bool TriMesh::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
 	  hit.position = r.origin + r.direction * t;
 	  hit.geometric_normal = normalize(n);
 	  hit.material = &materials[mat_idx[prim_idx]];
-	  hit.shading_normal = normalize(n);
+	  //hit.shading_normal = normalize(n);
 
 
-	  //float u = 1 - v - w;
-	  //hit.shading_normal = normalize(u * normals.vertex(face.x) + v * normals.vertex(face.y) + w * normals.vertex(face.z));
-	  //// hit.shading_normal = n;
+	  if (has_normals()) {
+		  float u = 1 - v - w;
+		  hit.shading_normal = normalize(u * normals.vertex(face.x) + v * normals.vertex(face.y) + w * normals.vertex(face.z));
+	  }
+	  else hit.shading_normal = n;
 
 	  //
 	  //if (hit.material->has_texture) {

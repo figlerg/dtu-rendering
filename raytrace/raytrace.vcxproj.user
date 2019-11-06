@@ -5,6 +5,10 @@
     </LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Sphere_cornell_box|Win32'">
+    <LocalDebuggerCommandArguments>C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\models\CornellBox.obj C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\models\CornellLeftSphere.obj C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\models\CornellRightSphere.obj</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Utah_teapot|Win32'">
     <LocalDebuggerCommandArguments>C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\models\teapot.obj</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>

@@ -18,11 +18,43 @@ float3 RayCaster::compute_pixel(unsigned int x, unsigned int y) const
 	// float3 result = make_float3(0.0f);
 	// float3 result = make_float3(1.0f, 0.0f, 0.0f); // all red
 
-	float2 coords = make_float2(x, y) * win_to_ip + lower_left;
-	Ray some_ray = scene->get_camera()->get_ray(coords);
+	//float2 coords = make_float2(x, y) * win_to_ip + lower_left;
 
-	float3 result = (some_ray.direction+1)/2;
+	//Ray some_ray = scene->get_camera()->get_ray(coords);
 
+	//float3 result = (some_ray.direction + 1) / 2;
+	//HitInfo hit = HitInfo();
+	//scene->closest_hit(some_ray, hit);
+	//if (hit.has_hit) {
+	//	return get_shader(hit)->shade(some_ray, hit);
+	//}
+	//else {
+	//	return get_background(optix::make_float3((some_ray.direction.x + 1) / 2, (some_ray.direction.y + 1) / 2, (some_ray.direction.z + 1) / 2));
+	//}
+
+
+
+
+	float3 sum;
+	for (int i = 0; i < subdivs * subdivs; i++) {
+		float2 coords = make_float2(x, y) * win_to_ip + lower_left + jitter[i];
+		Ray some_ray = scene->get_camera()->get_ray(coords);
+
+		float3 result = (some_ray.direction + 1) / 2;
+		HitInfo hit = HitInfo();
+		scene->closest_hit(some_ray, hit);
+
+
+		if (hit.has_hit) {
+			sum += get_shader(hit)->shade(some_ray, hit);
+		}
+		else {
+			sum += get_background(optix::make_float3((some_ray.direction.x + 1) / 2, (some_ray.direction.y + 1) / 2, (some_ray.direction.z + 1) / 2));
+		}
+
+	}
+
+	return sum / (subdivs * subdivs);
 
   // Use the scene and its camera
   // to cast a ray that computes the color of the pixel at index (x, y).
@@ -42,14 +74,7 @@ float3 RayCaster::compute_pixel(unsigned int x, unsigned int y) const
   //        (b) Use get_background(...) if the ray does not hit anything.
 
 
-	HitInfo hit = HitInfo();
-	scene->closest_hit(some_ray, hit);
-	if (hit.has_hit) {
-		return get_shader(hit)->shade(some_ray, hit);
-	}
-	else {
-		return get_background(optix::make_float3((some_ray.direction.x + 1) / 2, (some_ray.direction.y + 1) / 2, (some_ray.direction.z + 1) / 2));
-	}
+
 }
 
 float3 RayCaster::get_background(const float3& dir) const
