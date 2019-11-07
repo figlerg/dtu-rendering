@@ -9,6 +9,8 @@
 /raytrace/Debug
 /raytrace/Release
 /SOIL
+/Cornell
+/Release
 CMakeLists.txt
 configuration.h
 configuration.h.in
