@@ -1,0 +1,12 @@
+﻿  MCGlossy.cpp
+  Mirror.cpp
+  RenderEngine.cpp
+  raytrace.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(52,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MCGlossy.cpp)
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(53,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MCGlossy.cpp)
+  Generating code
+  30 of 1696 functions ( 1.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    29 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Release\raytrace.exe

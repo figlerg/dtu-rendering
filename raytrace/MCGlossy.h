@@ -15,7 +15,7 @@
 class MCGlossy : public Glossy
 {
 public:
-  MCGlossy(PathTracer* pathtracer, const std::vector<Light*>& light_vector, int max_trace_depth = 500) 
+  MCGlossy(PathTracer* pathtracer, const std::vector<Light*>& light_vector, int max_trace_depth = 10) 
     : Glossy(pathtracer, light_vector, max_trace_depth) 
   { }
 

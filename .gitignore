@@ -6,11 +6,12 @@
 /cmake-build-debug
 /debug
 /models
-/raytrace/Debug
-/raytrace/Release
 /SOIL
-/Cornell
-/Release
+/raytrace/Release
+/raytrace/Debug
+/raytrace/Cornell
+/raytrace/Utah_teapot
+/raytrace/Sphere_cornell_box
 CMakeLists.txt
 configuration.h
 configuration.h.in
