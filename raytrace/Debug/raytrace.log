@@ -1,21 +1,6 @@
 ﻿  cl : Command line warning D9035 : option 'Gm' has been deprecated and will be removed in a future release
-  cl : Command line warning D9030 : '/Gm' is incompatible with multiprocessing; ignoring /MP switch
-  Triangle.cpp
-  TriMesh.cpp
-  RayCaster.cpp
   MCGlossy.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\RayCaster.cpp(39,20): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(52,13): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-  Directional.cpp
-  BspTree.cpp
-  AreaLight.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(52,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(53,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-  Accelerator.cpp
-  Generating Code...
-  Compiling...
-  RenderEngine.cpp
-  Generating Code...
-  raytrace.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\AreaLight.cpp(39,20): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\AreaLight.cpp(39,20): warning C4018: Skipping... (no relevant changes detected)
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\MCGlossy.cpp(43,9): warning C4101:  'R': unreferenced local variable
   raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Debug\raytrace.exe

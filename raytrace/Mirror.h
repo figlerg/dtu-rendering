@@ -13,7 +13,7 @@
 class Mirror : virtual public Shader
 {
 public:
-  Mirror(RayTracer* raytracer, unsigned int max_trace_depth = 10) 
+  Mirror(RayTracer* raytracer, unsigned int max_trace_depth =10) 
     : tracer(raytracer), max_depth(max_trace_depth)
   { }
 

@@ -53,6 +53,8 @@ bool TriMesh::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
   //        vertex normals for computing the shading normal. If not, use
   //        the geometric normal as shading normal.
 
+  const uint3& in = geometry.face(prim_idx);
+
 
   float3 n;
   float t, v, w;
@@ -69,7 +71,7 @@ bool TriMesh::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
 
 	  if (has_normals()) {
 		  float u = 1 - v - w;
-		  hit.shading_normal = normalize(u * normals.vertex(face.x) + v * normals.vertex(face.y) + w * normals.vertex(face.z));
+		  hit.shading_normal = normalize(u * normals.vertex(in.x) + v * normals.vertex(in.y) + w * normals.vertex(in.z));
 	  }
 	  else hit.shading_normal = n;
 

@@ -41,13 +41,13 @@ float3 MCGlossy::shade(const Ray& r, HitInfo& hit, bool emit) const
   //       the shader for the surface it hit.
 
   float R;
-  Ray reflected, refracted;
-  HitInfo hit_reflected, hit_refracted;
-  tracer->trace_reflected(r, hit, reflected, hit_reflected);
-  tracer->trace_refracted(r, hit, refracted, hit_refracted, R);
+  //Ray reflected, refracted;
+  //HitInfo hit_reflected, hit_refracted;
+  //tracer->trace_reflected(r, hit, reflected, hit_reflected);
+  //tracer->trace_refracted(r, hit, refracted, hit_refracted, R);
 
   float3 new_dir = sample_cosine_weighted(hit.shading_normal);
-  Ray new_ray = Ray(hit.position, new_dir, 0, 1e-4, r.tmax);
+  Ray new_ray = Ray(hit.position, new_dir, 0, 1e-4,RT_DEFAULT_MAX);
   HitInfo new_hit = HitInfo();
   new_hit.trace_depth = hit.trace_depth + 1;
   new_hit.ray_ior = hit.ray_ior;
@@ -58,9 +58,54 @@ float3 MCGlossy::shade(const Ray& r, HitInfo& hit, bool emit) const
 
   // return R * shade_new_ray(reflected, hit_reflected) + (1.0f - R) * shade_new_ray(refracted, hit_refracted) + Phong::shade(r, hit, emit);
 
-  if (has_hit) {
-	  throw;
-	  return result + Phong::shade(r, hit, emit) + shade_new_ray(new_ray, new_hit, false);
+  //has_hit was originally here
+  if (true) {
+	  result += shade_new_ray(new_ray, new_hit, false);
   }
-  else return result + Phong::shade(r, hit, emit);
+  result *= rho_d;
+  //return result + Phong::shade(r, hit, emit);
+  return result + Lambertian::shade(r, hit, emit);
+
+	//if (hit.trace_depth >= max_depth)
+	//	return make_float3(0.0f);
+
+	//float3 rho_d = get_diffuse(hit);
+
+	//float R;
+	//Ray reflected, refracted;
+	//HitInfo hit_reflected, hit_refracted;
+	//tracer->trace_reflected(r, hit, reflected, hit_reflected);
+	//tracer->trace_refracted(r, hit, refracted, hit_refracted, R);
+
+	//float3 accum = make_float3(0, 0, 0);
+
+	//const int SAMPLES = 8;
+
+	//for (int i = 0; i < SAMPLES; i++) {
+	//	float3 direction = sample_cosine_weighted(hit.shading_normal);
+	//	Ray test;
+	//	HitInfo test2;
+	//	test.origin = hit.position + make_float3(0, 0, 0);
+	//	test.direction = direction;
+	//	test.ray_type = 123;
+	//	test.tmax = RT_DEFAULT_MAX;
+	//	test.tmin = 1e-4;
+	//	test2.trace_depth = hit.trace_depth + 1;
+	//	test2.ray_ior = hit.ray_ior;
+
+	//	if (test2.trace_depth >= max_depth)
+	//		break;
+
+	//	bool did_hit = tracer->trace_to_closest(test, test2);
+
+	//	if (did_hit) {
+	//		// std::cout << "success" << std::endl;
+	//		accum += shade_new_ray(test, test2, false);
+	//	}
+	//	else {
+	//		// std::cout << "failed" << std::endl;
+	//	}
+	//}
+
+	//return rho_d * accum / SAMPLES + Phong::shade(r, hit, emit);
 }

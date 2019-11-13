@@ -1,46 +1,10 @@
-﻿  Camera.cpp
-  MCGlossy.cpp
-  PathTracer.cpp
-  Scene.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(52,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MCGlossy.cpp)
-  ParticleTracer.cpp
-  RayCaster.cpp
-  RayTracer.cpp
-  Glossy.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(53,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MCGlossy.cpp)
-  GlossyVolume.cpp
-  Lambertian.cpp
-  Mirror.cpp
-  Phong.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\RayCaster.cpp(39,20): warning C4018:  '<': signed/unsigned mismatch
-  PhotonCaustics.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\Lambertian.cpp(39,21): warning C4018:  '<': signed/unsigned mismatch
-  Textured.cpp
-  Transparent.cpp
-  Volume.cpp
-  AreaLight.cpp
-  Directional.cpp
-  PointLight.cpp
-  RenderEngine.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\Phong.cpp(43,21): warning C4018:  '<': signed/unsigned mismatch
-  string_utils.cpp
-  Randomizer.cpp
-  Plane.cpp
-  Sphere.cpp
-  Triangle.cpp
-  Accelerator.cpp
-  BspTree.cpp
-  obj_load.cpp
-  TriMesh.cpp
-  Gamma.cpp
-  HDRTexture.cpp
-  InvSphereMap.cpp
-  SphereTexture.cpp
-  Texture.cpp
-  raytrace.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\AreaLight.cpp(39,20): warning C4018:  '<': signed/unsigned mismatch
+﻿  MCGlossy.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(52,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(53,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\MCGlossy.cpp(43,9): warning C4101:  'R': unreferenced local variable
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-  All 1698 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  2 of 1693 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    12 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Cornell\raytrace.exe

@@ -46,12 +46,12 @@ bool BspTree::closest_hit(Ray& r, HitInfo& hit) const
 
   closest_plane(r, hit);
 
-  if (intersect_min_max(r) && intersect_node(r,hit,*root))
+  if (intersect_min_max(r))
   {
-	  return true;
+	  intersect_node(r, hit, *root);
   }
 
-  return false;
+  return hit.has_hit;
 
 }
 
@@ -66,12 +66,12 @@ bool BspTree::any_hit(Ray& r, HitInfo& hit) const
 
 	any_plane(r, hit);
 
-	if (intersect_min_max(r) && intersect_node(r, hit, *root))
+	if (intersect_min_max(r) )
 	{
-		return true;
+		intersect_node(r, hit, *root);
 	}
 
-	return false;
+	return hit.has_hit;
 
 }
 
