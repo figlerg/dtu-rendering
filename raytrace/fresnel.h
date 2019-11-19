@@ -8,19 +8,34 @@
 inline float fresnel_r_s(float cos_theta1, float cos_theta2, float ior1, float ior2)
 {
   // Compute the perpendicularly polarized component of the Fresnel reflectance
-  return 0.0;
+
+	float ni_cosi = ior1 * cos_theta1;
+	float nt_cost = ior2 * cos_theta2;
+
+
+  return (ni_cosi-nt_cost)/(ni_cosi + nt_cost);
 }
 
 inline float fresnel_r_p(float cos_theta1, float cos_theta2, float ior1, float ior2)
 {
   // Compute the parallelly polarized component of the Fresnel reflectance
-  return 0.0;
+	float nt_cosi = ior2 * cos_theta1;
+	float ni_cost = ior1 * cos_theta2;
+
+
+	return (nt_cosi - ni_cost) / (nt_cosi + ni_cost);
+	
+	//return 0.0;
 }
 
 inline float fresnel_R(float cos_theta1, float cos_theta2, float ior1, float ior2)
 {
   // Compute the Fresnel reflectance using fresnel_r_s(...) and fresnel_r_p(...)
-  return 0.0;
+	float r1 = fresnel_r_s(cos_theta1, cos_theta2, ior1, ior2);
+	float r2 = fresnel_r_p(cos_theta1, cos_theta2, ior1, ior2);
+
+
+	return 0.5*(powf(r1,2)* powf(r2, 2));
 }
 
 #endif // FRESNEL_H

@@ -84,8 +84,43 @@ bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, 
   // Hints: (a) There is a refract function available in the OptiX math library.
   //        (b) Set out_hit.ray_ior and out_hit.trace_depth.
   //        (c) Remember that the function must handle total internal reflection.
+  
+  // old return:
   R = 0.1;
   return trace_refracted(in, in_hit, out, out_hit);
+	
+	
+	float3 out_dir = make_float3(0, 0, 0);
+	float3 normal = make_float3(0, 0, 0);
+	float out_ior = get_ior_out(in, in_hit, normal);
+	bool tir = !refract(out_dir, in.direction, normal, out_ior / in_hit.ray_ior);
+
+	if (tir) {
+		R = 1.0;
+		return true;
+	}
+
+	out = Ray(in_hit.position, out_dir, 0, 1e-04);
+
+	out_hit.ray_ior = out_ior;
+	out_hit.trace_depth = in_hit.trace_depth + 1;
+
+
+	bool has_hit = trace_to_closest(out, out_hit);
+
+	float ior1 = in_hit.ray_ior;
+	float ior2 = out_hit.ray_ior;
+	
+	float a = length(in.direction);
+	float b = length(out.direction);
+
+	float cos_in = dot(in_hit.shading_normal, in.direction);
+	float cos_out = dot(-in_hit.shading_normal, out.direction);
+
+	R = fresnel_R(cos_in, cos_out, ior1, ior2);
+
+
+	return has_hit;
 }
 
 float RayTracer::get_ior_out(const Ray& in, const HitInfo& in_hit, float3& normal) const

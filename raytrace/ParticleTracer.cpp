@@ -94,6 +94,11 @@ void ParticleTracer::trace_particle(const Light* light, const unsigned int caust
 
   light->emit(r, hit, phi);
 
+  // check for 1st specular hit, return for the rest
+  if (!scene->is_specular(hit.material)) {
+	  return;
+  }
+
   // Forward from all specular surfaces
   while(scene->is_specular(hit.material) && hit.trace_depth < 500)
   {

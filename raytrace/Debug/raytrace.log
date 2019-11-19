@@ -1,6 +1,4 @@
 ﻿  cl : Command line warning D9035 : option 'Gm' has been deprecated and will be removed in a future release
-  MCGlossy.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(52,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(53,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\MCGlossy.cpp(43,9): warning C4101:  'R': unreferenced local variable
+  RayTracer.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\fresnel.h(38,12): warning C4244:  'return': conversion from 'double' to 'float', possible loss of data
   raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Debug\raytrace.exe

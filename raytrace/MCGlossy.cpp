@@ -58,7 +58,7 @@ float3 MCGlossy::shade(const Ray& r, HitInfo& hit, bool emit) const
 
   // return R * shade_new_ray(reflected, hit_reflected) + (1.0f - R) * shade_new_ray(refracted, hit_refracted) + Phong::shade(r, hit, emit);
 
-  //has_hit was originally here
+  //has_hit was originally here, but this should happen every time?
   if (true) {
 	  result += shade_new_ray(new_ray, new_hit, false);
   }
