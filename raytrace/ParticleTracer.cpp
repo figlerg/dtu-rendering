@@ -90,6 +90,9 @@ void ParticleTracer::trace_particle(const Light* light, const unsigned int caust
   // Shoot a particle from the sampled source
   Ray r;
   HitInfo hit;
+  float3 phi = make_float3(0);
+
+  light->emit(r, hit, phi);
 
   // Forward from all specular surfaces
   while(scene->is_specular(hit.material) && hit.trace_depth < 500)
@@ -99,7 +102,14 @@ void ParticleTracer::trace_particle(const Light* light, const unsigned int caust
     case 3:  // mirror materials
       {
         // Forward from mirror surfaces here
-        return;
+		Ray r_out = Ray();
+		HitInfo hit_out = HitInfo();
+		bool has_hit = trace_reflected(r, hit, r_out, hit_out);
+		if (has_hit) {
+			r = r_out;
+			hit = hit_out;
+		}
+        else return;
       }
       break;
     case 11: // absorbing volume
@@ -111,14 +121,30 @@ void ParticleTracer::trace_particle(const Light* light, const unsigned int caust
     case 4:  // transparent materials
       {
         // Forward from transparent surfaces here
-        return;
+		Ray r_out = Ray();
+		HitInfo hit_out = HitInfo();
+		float R = 0;
+		float sample = mt_random();
+
+		bool has_hit = trace_refracted(r, hit, r_out, hit_out, R);
+		
+		if (sample < R) {
+			has_hit = trace_reflected(r, hit, r_out, hit_out); // overwrite it
+
+		}
+		
+		if (has_hit) {
+			r = r_out;
+			hit = hit_out;
+		}
+		else return;
       }
       break;
     default: 
       return;
     }
   }
-
+  caustics.store(phi, hit.position, -r.direction);
   // Store in caustics map at first diffuse surface
   // Hint: When storing, the convention is that the photon direction
   //       should point back toward where the photon came from.

@@ -63,8 +63,9 @@ float3 MCGlossy::shade(const Ray& r, HitInfo& hit, bool emit) const
 	  result += shade_new_ray(new_ray, new_hit, false);
   }
   result *= rho_d;
-  //return result + Phong::shade(r, hit, emit);
-  return result + Lambertian::shade(r, hit, emit);
+  return result + Phong::shade(r, hit, emit);
+
+  //return result + Lambertian::shade(r, hit, emit);
 
 	//if (hit.trace_depth >= max_depth)
 	//	return make_float3(0.0f);
