@@ -12,8 +12,22 @@ float3 Volume::shade(const Ray& r, HitInfo& hit, bool emit) const
 {
   // If inside the volume, Find the direct transmission through the volume by using
   // the transmittance to modify the result from the Transparent shader.
+	
+	//float s = hit.dist; // this makes no sense I think? This is the hit distance from the first ray hitting the volume?
+	float s = 0.0f;
 
-  return Transparent::shade(r, hit, emit);
+	float3 no_absorption = Transparent::shade(r, hit, emit);
+	
+	float3 sigma = get_transmittance(hit);
+	float3 exp_term = expf(-sigma * s);
+
+	float3 result = no_absorption * exp_term; // apparently this is component wise according to web. check!
+	// is exp expensive? seems slow
+
+	
+
+
+  return result;
 }
 
 float3 Volume::get_transmittance(const HitInfo& hit) const
@@ -25,6 +39,23 @@ float3 Volume::get_transmittance(const HitInfo& hit) const
     // this material property as an absorption coefficient. Since absorption has an effect
     // opposite that of reflection, using 1/rho_d-1 makes it more intuitive for the user.
     float3 rho_d = make_float3(hit.material->diffuse[0], hit.material->diffuse[1], hit.material->diffuse[2]);
+	
+	// TODO not sure because of dim = 3?
+	// What to do for the corner case rho_d == 0 ? some - INF value?
+	//float3 transmittance = make_float3(0.0f);
+	float x, y, z;
+	if (rho_d.x == 0) x = 0.0f;
+	else x = 1 / rho_d.x - 1;
+	if (rho_d.y == 0) y = 0.0f;
+	else y = 1 / rho_d.y - 1;
+	if (rho_d.z == 0) z = 0.0f;
+	else  z = 1 / rho_d.z - 1;
+
+
+
+	float3 transmittance = make_float3(x,y,z);
+	return transmittance;
+
   }
   return make_float3(1.0f);
 }

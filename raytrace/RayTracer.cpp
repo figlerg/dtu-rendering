@@ -97,7 +97,7 @@ bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, 
 
 	if (tir) {
 		R = 1.0;
-		return true;
+		return false;
 	}
 
 	out = Ray(in_hit.position, out_dir, 0, 1e-04);
@@ -106,19 +106,19 @@ bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, 
 	out_hit.trace_depth = in_hit.trace_depth + 1;
 
 
-	bool has_hit = trace_to_closest(out, out_hit);
 
 	float ior1 = in_hit.ray_ior;
 	float ior2 = out_hit.ray_ior;
 	
-	float a = length(in.direction);
-	float b = length(out.direction);
+	//float a = length(in.direction);
+	//float b = length(out.direction);
 
 	float cos_in = dot(normal, -in.direction);
 	float cos_out = dot(-normal, out.direction);
 
 	R = fresnel_R(cos_in, cos_out, ior1, ior2);
 
+	bool has_hit = trace_to_closest(out, out_hit);
 
 	return has_hit;
 }

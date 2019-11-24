@@ -35,7 +35,7 @@ inline float fresnel_R(float cos_theta1, float cos_theta2, float ior1, float ior
 	float r2 = fresnel_r_p(cos_theta1, cos_theta2, ior1, ior2);
 
 
-	return 0.5*(powf(r1,2)* powf(r2, 2));
+	return 0.5*(powf(r1,2.0f)* powf(r2, 2.0f));
 }
 
 #endif // FRESNEL_H
