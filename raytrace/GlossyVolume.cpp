@@ -19,5 +19,20 @@ float3 GlossyVolume::shade(const Ray& r, HitInfo& hit, bool emit) const
   // by the transmittance of the material if the ray is inside (as in
   // the volume shader).
 
-  return Volume::shade(r, hit, emit);
+	if (hit.trace_depth >= max_depth)
+		return make_float3(0.0f);
+
+	float R;
+	Ray reflected, refracted;
+	HitInfo hit_reflected, hit_refracted;
+	tracer->trace_reflected(r, hit, reflected, hit_reflected);
+	tracer->trace_refracted(r, hit, refracted, hit_refracted, R);
+
+
+	return shade_new_ray(refracted, hit_refracted) + Phong::shade(r, hit, emit);
+	return R * shade_new_ray(reflected, hit_reflected) + (1.0f - R) * shade_new_ray(refracted, hit_refracted) + Phong::shade(r, hit, emit);
+
+
+  return Volume::shade(r, hit, emit)+Phong::shade(r,hit,emit);
+
 }

@@ -17,6 +17,7 @@ float3 Lambertian::shade(const Ray& r, HitInfo& hit, bool emit) const
 {
   float3 rho_d = get_diffuse(hit);
   float3 result = make_float3(0.0f);
+
   
   // Implement Lambertian reflection here.
   //

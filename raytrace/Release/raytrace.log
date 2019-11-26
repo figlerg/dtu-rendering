@@ -1,48 +1,7 @@
-﻿  Accelerator.cpp
-  AreaLight.cpp
-  BspTree.cpp
-  Camera.cpp
-  Directional.cpp
-  Gamma.cpp
-  Glossy.cpp
-  GlossyVolume.cpp
-  HDRTexture.cpp
-  InvSphereMap.cpp
-  Lambertian.cpp
-  MCGlossy.cpp
-  Mirror.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\AreaLight.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(52,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MCGlossy.cpp)
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(53,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MCGlossy.cpp)
-  ParticleTracer.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\Lambertian.cpp(39,21): warning C4018: '<': signed/unsigned mismatch
-  PathTracer.cpp
-  Phong.cpp
-  PhotonCaustics.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\MCGlossy.cpp(43,9): warning C4101: 'R': unreferenced local variable
-  Plane.cpp
-  PointLight.cpp
-  Randomizer.cpp
-  RayCaster.cpp
-  RayTracer.cpp
-  RenderEngine.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\Phong.cpp(43,21): warning C4018: '<': signed/unsigned mismatch
-  Scene.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\fresnel.h(38,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data (compiling source file RayTracer.cpp)
-  Sphere.cpp
-  SphereTexture.cpp
-  Texture.cpp
-  Textured.cpp
-  Transparent.cpp
-  TriMesh.cpp
-  Triangle.cpp
-  Volume.cpp
-  obj_load.cpp
-  raytrace.cpp
-  string_utils.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\RayCaster.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
+﻿  GlossyVolume.cpp
   Generating code
-  Compiler version has changed, fall back to full compilation.
-  All 1718 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  2 of 1714 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    17 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Release\raytrace.exe
