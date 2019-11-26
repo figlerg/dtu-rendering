@@ -120,6 +120,7 @@ void ParticleTracer::trace_particle(const Light* light, const unsigned int caust
     case 11: // absorbing volume
     case 12: // absorbing glossy volume
       {
+		phi *= get_transmittance(hit);
         // Handle absorption here (Worksheet 8)
       }
     case 2:  // glossy materials
@@ -149,6 +150,7 @@ void ParticleTracer::trace_particle(const Light* light, const unsigned int caust
       return;
     }
   }
+  //float3 transmittance = get_transmittance(hit);
   caustics.store(phi, hit.position, -r.direction);
   // Store in caustics map at first diffuse surface
   // Hint: When storing, the convention is that the photon direction
@@ -161,15 +163,46 @@ float3 ParticleTracer::get_diffuse(const HitInfo& hit) const
   return m ? make_float3(m->diffuse[0], m->diffuse[1], m->diffuse[2]) : make_float3(0.8f);
 }
 
+//float3 ParticleTracer::get_transmittance(const HitInfo& hit) const
+//{
+//  if(hit.material)
+//  {
+//    // Compute and return the transmittance using the diffuse reflectance of the material.
+//    // Diffuse reflectance rho_d does not make sense for a specular material, so we can use 
+//    // this material property as an absorption coefficient. Since absorption has an effect
+//    // opposite that of reflection, using 1/rho_d-1 makes it more intuitive for the user.
+//    float3 rho_d = make_float3(hit.material->diffuse[0], hit.material->diffuse[1], hit.material->diffuse[2]);
+//  }
+//  return make_float3(1.0f);
+//}
+
 float3 ParticleTracer::get_transmittance(const HitInfo& hit) const
 {
-  if(hit.material)
-  {
-    // Compute and return the transmittance using the diffuse reflectance of the material.
-    // Diffuse reflectance rho_d does not make sense for a specular material, so we can use 
-    // this material property as an absorption coefficient. Since absorption has an effect
-    // opposite that of reflection, using 1/rho_d-1 makes it more intuitive for the user.
-    float3 rho_d = make_float3(hit.material->diffuse[0], hit.material->diffuse[1], hit.material->diffuse[2]);
-  }
-  return make_float3(1.0f);
+	if (hit.material)
+	{
+
+		// Compute and return the transmittance using the diffuse reflectance of the material.
+		// Diffuse reflectance rho_d does not make sense for a specular material, so we can use 
+		// this material property as an absorption coefficient. Since absorption has an effect
+		// opposite that of reflection, using 1/rho_d-1 makes it more intuitive for the user.
+		float3 rho_d = make_float3(hit.material->diffuse[0], hit.material->diffuse[1], hit.material->diffuse[2]);
+
+		// TODO not sure because of dim = 3?
+		// What to do for the corner case rho_d == 0 ? some - INF value?
+		//float3 transmittance = make_float3(0.0f);
+		float x, y, z;
+		if (rho_d.x == 0.0f) x = 0.0f;
+		else x = 1 / rho_d.x - 1;
+		if (rho_d.y == 0.0f) y = 0.0f;
+		else y = 1 / rho_d.y - 1;
+		if (rho_d.z == 0.0f) z = 0.0f;
+		else  z = 1 / rho_d.z - 1;
+
+
+
+		float3 transmittance = expf(-hit.dist * make_float3(x, y, z));
+		return transmittance;
+
+	}
+	return make_float3(1.0f);
 }

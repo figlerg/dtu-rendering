@@ -12,14 +12,18 @@ float3 Volume::shade(const Ray& r, HitInfo& hit, bool emit) const
 {
   // If inside the volume, Find the direct transmission through the volume by using
   // the transmittance to modify the result from the Transparent shader.
+
+	//dot(normalize(r.direction), normalize(hit.shading_normal)) > 0 // check this?
 	
-	float s = hit.dist; // this makes no sense I think? This is the hit distance from the first ray hitting the volume?
+	//float s = hit.dist; // this makes no sense I think? This is the hit distance from the first ray hitting the volume?
 	//float s = 0.0f;
 
 	float3 no_absorption = Transparent::shade(r, hit, emit);
 
-	
-	float3 transmittance = get_transmittance(hit);
+	float3 transmittance = make_float3(1.0f);
+	if (dot(normalize(r.direction), normalize(hit.shading_normal)) > 0) {
+		transmittance = get_transmittance(hit);
+	}
 
 	float3 result = no_absorption * transmittance; // apparently this is component wise according to web. check!
 
@@ -31,6 +35,7 @@ float3 Volume::get_transmittance(const HitInfo& hit) const
 {
   if(hit.material)
   {
+
     // Compute and return the transmittance using the diffuse reflectance of the material.
     // Diffuse reflectance rho_d does not make sense for a specular material, so we can use 
     // this material property as an absorption coefficient. Since absorption has an effect
