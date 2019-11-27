@@ -123,6 +123,7 @@ void RenderEngine::load_files(int argc, char** argv)
   }
 }
 
+
 void RenderEngine::init_GLUT(int argc, char** argv)
 {
   glutInit(&argc, argv);
