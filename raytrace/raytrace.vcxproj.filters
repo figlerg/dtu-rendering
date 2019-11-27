@@ -6,40 +6,43 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Tracers">
-      <UniqueIdentifier>{450fbd42-ffec-4a33-97dc-8952301b526e}</UniqueIdentifier>
+      <UniqueIdentifier>{aa50afe1-960c-47e0-801d-93c735b575ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
-      <UniqueIdentifier>{90b1d439-1e94-49c8-8ccb-c26a67c0e1fa}</UniqueIdentifier>
+      <UniqueIdentifier>{7f478bfd-cbf3-4000-8288-9ca9e8328bad}</UniqueIdentifier>
     </Filter>
     <Filter Include="Lights">
-      <UniqueIdentifier>{aff63908-ab9e-4899-9661-f06587428cc4}</UniqueIdentifier>
+      <UniqueIdentifier>{7ecfb618-fca3-46ae-857f-6c2b9b75ccbc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Render">
-      <UniqueIdentifier>{4faf2132-8939-49b7-bc29-b64be8b18dde}</UniqueIdentifier>
+      <UniqueIdentifier>{ce057f91-b480-403a-b2d6-ea4a93cf6dfa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools">
-      <UniqueIdentifier>{2eb434a1-6bc0-4100-9db4-9f68139685bf}</UniqueIdentifier>
+      <UniqueIdentifier>{8acd63a1-0856-4a37-bd65-96501ccddb6d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sampling">
-      <UniqueIdentifier>{12db92d8-bb45-40cf-ba60-c4adea524109}</UniqueIdentifier>
+      <UniqueIdentifier>{7c8b12ae-88b4-4201-af59-f4609a28b157}</UniqueIdentifier>
     </Filter>
     <Filter Include="Geometry">
-      <UniqueIdentifier>{0d7cd886-b62b-4a53-a291-47575902c1ac}</UniqueIdentifier>
+      <UniqueIdentifier>{16f5901d-2b19-4879-974c-fca256fde8c8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Geometry\Accelerators">
-      <UniqueIdentifier>{9f63b0c8-54a2-405e-9243-44ad1247c262}</UniqueIdentifier>
+      <UniqueIdentifier>{0653dd4a-74c5-4995-9ddd-ae0e2d508393}</UniqueIdentifier>
     </Filter>
     <Filter Include="Geometry\TriMesh">
-      <UniqueIdentifier>{c04e9365-9754-4610-b651-a35c9bea23a1}</UniqueIdentifier>
+      <UniqueIdentifier>{96d2452c-4f86-4701-92d4-93fb5f3d6c74}</UniqueIdentifier>
     </Filter>
     <Filter Include="ToneMap">
-      <UniqueIdentifier>{4eb8012c-01a0-40e5-bb58-fd00fe153f52}</UniqueIdentifier>
+      <UniqueIdentifier>{59c3b2fe-22c8-4dda-97ea-a3378965189e}</UniqueIdentifier>
     </Filter>
     <Filter Include="PhotonMap">
-      <UniqueIdentifier>{6b1d572a-846a-4ba6-aad4-3fc2fb6407be}</UniqueIdentifier>
+      <UniqueIdentifier>{2e5cf0e0-ca50-423e-89e0-743aee8d2e67}</UniqueIdentifier>
     </Filter>
     <Filter Include="Texture">
-      <UniqueIdentifier>{448c6eab-7faa-453a-b43f-52d90cd28fad}</UniqueIdentifier>
+      <UniqueIdentifier>{c050ef8d-9d33-4862-8eae-26d12311e105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{6f9d131b-0fab-47ec-b69c-87f54b69f1ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -193,14 +196,38 @@
     <ClInclude Include="my_glut.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="PathTracer.h">
-      <Filter>Tracers</Filter>
+    <ClInclude Include="sampler.h">
+      <Filter>Sampling</Filter>
     </ClInclude>
     <ClInclude Include="MCGlossy.h">
       <Filter>Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="sampler.h">
-      <Filter>Sampling</Filter>
+    <ClInclude Include="PathTracer.h">
+      <Filter>Tracers</Filter>
+    </ClInclude>
+    <ClInclude Include="quaternion.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="GLViewController.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="QuatTrackBall.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="PanoramicTexture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Holdout.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="BRDF.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="MerlTexture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="MerlShader.h">
+      <Filter>Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,10 +328,31 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="MCGlossy.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
     <ClCompile Include="PathTracer.cpp">
       <Filter>Tracers</Filter>
     </ClCompile>
-    <ClCompile Include="MCGlossy.cpp">
+    <ClCompile Include="GLViewController.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="QuatTrackBall.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="PanoramicTexture.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Holdout.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="BRDF.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="MerlTexture.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="MerlShader.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
   </ItemGroup>

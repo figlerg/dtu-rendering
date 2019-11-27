@@ -40,7 +40,11 @@ float4 HDRTexture::look_up(unsigned int idx)
 
 float HDRTexture::convert(unsigned char c, int e)
 {
-  // Implement the conversion from RGBE to floating point.
-  // Note that 128 has already been subtracted from e.
-  return 0.0f;
+  // Implement the conversion from RGBE to floating point
+  float result;
+  if(e < 0)
+    result = (c + 0.5f)/(256.0f*int_pow(2.0f, static_cast<unsigned int>(-e)));
+  else
+    result = (c + 0.5f)/256.0f*int_pow(2.0f, static_cast<unsigned int>(e));
+  return result;
 }

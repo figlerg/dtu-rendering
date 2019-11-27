@@ -3,9 +3,12 @@
 // Copyright (c) DTU Informatics 2011
 
 #include <iostream>
+#include <list>
+#include <string>
 #include <optix_world.h>
 #include "mt_random.h"
 #include "my_glut.h"
+#include "string_utils.h"
 #include "ObjMaterial.h"
 #include "TriMesh.h"
 #include "IndexedFaceSet.h"
@@ -39,6 +42,11 @@ Scene::~Scene()
   for(unsigned int i = 0; i < extracted_lights.size(); ++i)
     delete lights[extracted_lights[i]];
   for(map<string, Texture*>::iterator i = textures.begin(); i != textures.end(); ++i)
+  {
+    delete i->second;
+    i->second = 0;
+  }
+  for(map<string, MerlTexture*>::iterator i = brdfs.begin(); i != brdfs.end(); ++i)
     delete i->second;
 }
 
@@ -69,10 +77,22 @@ void Scene::load_texture(const ObjMaterial& mat, bool is_sphere)
 {
   if(mat.has_texture && textures.find(mat.tex_name) == textures.end())
   {
-    Texture*& tex = textures[mat.tex_name];
-    tex = is_sphere ? new InvSphereMap : new Texture;
     string path_and_name = mat.tex_path + mat.tex_name;
-    tex->load(path_and_name.c_str());
+    list<string> file_type;
+    split(mat.tex_name, file_type, ".");
+    if(file_type.back() == string("binary"))
+    {
+      MerlTexture*& brdf = brdfs[mat.tex_name];
+      brdf = new MerlTexture;
+      textures[mat.tex_name] = brdf;
+      brdf->load(path_and_name.c_str());
+    }
+    else
+    {
+      Texture*& tex = textures[mat.tex_name];
+      tex = is_sphere ? new InvSphereMap : new Texture;
+      tex->load(path_and_name.c_str());
+    }
   }
 }
 

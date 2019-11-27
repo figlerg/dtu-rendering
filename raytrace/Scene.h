@@ -20,6 +20,7 @@
 #include "HitInfo.h"
 #include "BspTree.h"
 #include "Texture.h"
+#include "MerlTexture.h"
 
 class Light;
 class RayTracer;
@@ -38,6 +39,7 @@ public:
   Camera* get_camera() { return cam; }
   void get_bsphere(optix::float3& c, float& r) const;
   std::map<std::string, Texture*>& get_textures() { return textures; }
+  std::map<std::string, MerlTexture*>& get_brdfs() { return brdfs; }
 
   // Loaders
   void load_mesh(const std::string& filename, const optix::Matrix4x4& transform = optix::Matrix4x4::identity());
@@ -73,6 +75,7 @@ private:
   void draw_triangle(const Triangle* triangle) const;
 
   std::map<std::string, Texture*> textures;
+  std::map<std::string, MerlTexture*> brdfs;
   std::vector<Light*> lights;
   std::vector<const TriMesh*> light_meshes;
   std::vector<unsigned int> extracted_lights;

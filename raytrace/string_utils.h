@@ -6,6 +6,9 @@
 #ifndef STRING_UTILS_H
 #define STRING_UTILS_H
 
+#include <string>
+#include <list>
+
 std::string trim(const std::string& s, const std::string& wspaces);
 std::string trim(const std::string& s);
 void split(const std::string& s, std::list<std::string>& result, const std::string& delim);

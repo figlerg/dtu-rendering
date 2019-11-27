@@ -25,6 +25,15 @@ inline void rotate_to_normal(const optix::float3& normal, optix::float3& v)
       + normal*v.z;
 }
 
+inline void onb(const optix::float3& normal, optix::float3& b1, optix::float3& b2)
+{
+  const float sign = copysignf(1.0f, normal.z);
+  const float a = -1.0f/(1.0f + fabsf(normal.z));
+  const float b = normal.x*normal.y*a;
+  b1 = optix::make_float3(1.0f + normal.x*normal.x*a, b, -sign*normal.x);
+  b2 = optix::make_float3(sign*b, sign*(1.0f + normal.y*normal.y*a), -normal.y);
+}
+
 // Given spherical coordinates, where theta is the 
 // polar angle and phi is the azimuthal angle, this
 // function returns the corresponding direction vector

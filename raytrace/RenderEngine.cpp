@@ -41,13 +41,13 @@ namespace
 //////////////////////////////////////////////////////////////////////
 
 RenderEngine::RenderEngine() 
-	//: win(optix::make_uint2(768, 768)),                        // Default window size
-	//res(optix::make_uint2(768, 768)),                        // Default render resolution
-	: win(optix::make_uint2(512, 512)),                        // Default window size
-	res(optix::make_uint2(512, 512)),                        // Default render resolution
-
+  : win(optix::make_uint2(512, 512)),                        // Default window size
+    res(optix::make_uint2(512, 512)),                        // Default render resolution
     image(res.x*res.y),
     image_tex(0),
+    mouse_state(GLUT_UP),
+    spin_timer(20),
+    vctrl(0),
     scene(&cam),
     filename("out.ppm"),                                     // Default output file name
     tracer(res.x, res.y, &scene, 100000),                    // Maximum number of photons in map
@@ -65,11 +65,13 @@ RenderEngine::RenderEngine()
     lambertian(scene.get_lights()),
     photon_caustics(&tracer, scene.get_lights(), 1.0f, 50),  // Max distance and number of photons to search for
     glossy(&tracer, scene.get_lights()),
+    holdout(&tracer, scene.get_lights(), 5),                 // No. of samples per path in holdout ambient occlusion
     mirror(&tracer),
     transparent(&tracer),
     volume(&tracer),
     glossy_volume(&tracer, scene.get_lights(), 6),           // Max ray tracing recursion depth
     mc_glossy(&tracer, scene.get_lights()),
+    merl(&tracer, scene.get_lights()),
     tone_map(1.8)                                            // Gamma for gamma correction
 { 
   shaders.push_back(&reflectance);                           // number key 0 (reflectance only)
@@ -78,8 +80,11 @@ RenderEngine::RenderEngine()
   shaders.push_back(&mc_glossy);                             // number key 3 (path tracing shader)
 }
 
-// argc is argument count -> how many files to expect
-// argv is argument vector -> actual values (filenames in this case)
+RenderEngine::~RenderEngine()
+{
+  delete vctrl;
+}
+
 void RenderEngine::load_files(int argc, char** argv)
 {
   if(argc > 1)
@@ -119,10 +124,15 @@ void RenderEngine::load_files(int argc, char** argv)
     scene.add_sphere(make_float3(0.0f, 0.5f, 0.0f), 0.3f, "../models/default_scene.mtl", 2);
     scene.add_triangle(make_float3(-0.2f, 0.1f, 0.9f), make_float3(0.2f, 0.1f, 0.9f), make_float3(-0.2f, 0.1f, -0.1f), "../models/default_scene.mtl", 3);
     scene.add_light(new PointLight(&tracer, make_float3(M_PIf), make_float3(0.0f, 1.0f, 0.0f)));
-    cam.set(make_float3(2.0f, 1.5f, 2.0f), make_float3(0.0f, 0.5, 0.0f), make_float3(0.0f, 1.0f, 0.0f), 1.0f);
+
+    init_view();
+    float3 eye = make_float3(2.0f, 1.5f, 2.0f);
+    float3 lookat = make_float3(0.0f, 0.5, 0.0f);
+    float3 up = make_float3(0.0f, 1.0f, 0.0f);
+    vctrl->set_view_param(eye, lookat, up);
+    cam.set(eye, lookat, up, 1.0f);
   }
 }
-
 
 void RenderEngine::init_GLUT(int argc, char** argv)
 {
@@ -133,7 +143,10 @@ void RenderEngine::init_GLUT(int argc, char** argv)
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
+  glutMouseFunc(mouse);
+  glutMotionFunc(move);
   glutIdleFunc(idle);
+  glutTimerFunc(spin_timer, spin, 0);
 }
 
 void RenderEngine::init_GL()
@@ -149,8 +162,13 @@ void RenderEngine::init_view()
   scene.get_bsphere(c, r);
   r *= 1.75f;
 
+  // Initialize track ball
+  vctrl = new GLViewController(win.x, win.y, c, r);
+
   // Initialize corresponding camera for tracer
-  cam.set(c + make_float3(0.0f, 0.0f, r), c, make_float3(0.0f, 1.0f, 0.0f), 1.0f);
+  float3 eye, lookat, up;
+  vctrl->get_view_param(eye, lookat, up);
+  cam.set(eye, lookat, up, 1.0f);
 }
 
 void RenderEngine::init_tracer()
@@ -168,6 +186,7 @@ void RenderEngine::init_tracer()
     else
       bgtex.load(bgtex_filename.c_str());
     tracer.set_background(&bgtex);
+    //scene.add_plane(make_float3(0.0f), make_float3(0.0f, 1.0f, 0.0f), "..\\models\\plane.mtl", 4); // holdout plane
   }
 
   // Set shaders
@@ -178,7 +197,9 @@ void RenderEngine::init_tracer()
   scene.set_shader(4, &transparent);            // shader for illum 4
   scene.set_shader(11, &volume);                // shader for illum 11
   scene.set_shader(12, &glossy_volume);         // shader for illum 12
-  
+  scene.set_shader(30, &holdout);               // shader for illum 30
+  scene.set_shader(31, &merl);                  // shader for illum 31
+
   // Load material textures
   scene.load_textures();
 
@@ -259,7 +280,16 @@ void RenderEngine::add_textures()
   glossy.set_textures(scene.get_textures());
   glossy_volume.set_textures(scene.get_textures());
   photon_caustics.set_textures(scene.get_textures());
+  merl.set_textures(scene.get_textures());
+  merl.set_brdfs(scene.get_brdfs());
   scene.textures_on();
+}
+
+void RenderEngine::readjust_camera()
+{
+  float3 eye, lookat, up;
+  vctrl->get_view_param(eye, lookat, up);
+  cam.set(eye, lookat, up, cam.get_cam_const());
 }
 
 void RenderEngine::render()
@@ -329,6 +359,34 @@ void RenderEngine::pathtrace()
 // Export/import
 //////////////////////////////////////////////////////////////////////
 
+void RenderEngine::save_view(const string& filename) const
+{
+  float cam_const = cam.get_cam_const();
+  ofstream ofs(filename.c_str(), ofstream::binary);
+  if(ofs.bad())
+    return;
+
+  vctrl->save(ofs);
+  ofs.write(reinterpret_cast<const char*>(&cam_const), sizeof(float));
+  ofs.close();
+}
+
+void RenderEngine::load_view(const string& filename)
+{
+  float cam_const;
+  ifstream ifs_view(filename.c_str(), ifstream::binary);
+  if(ifs_view.bad())
+    return;
+
+  vctrl->load(ifs_view);
+  const istream& found_fd = ifs_view.read(reinterpret_cast<char*>(&cam_const), sizeof(float));
+  ifs_view.close();
+
+  float3 eye, lookat, up;
+  vctrl->get_view_param(eye, lookat, up);
+  cam.set(eye, lookat, up, found_fd ? cam_const : cam.get_cam_const());
+}
+
 void RenderEngine::save_as_bitmap()
 {
   string png_name = "out.png";
@@ -358,7 +416,7 @@ void RenderEngine::save_as_bitmap()
 // Draw functions
 //////////////////////////////////////////////////////////////////////
 
-void RenderEngine::set_gl_ortho_proj()
+void RenderEngine::set_gl_ortho_proj() const
 {
   glMatrixMode(GL_PROJECTION);	 
   glLoadIdentity();             
@@ -366,6 +424,60 @@ void RenderEngine::set_gl_ortho_proj()
   glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
 
   glMatrixMode(GL_MODELVIEW);  
+}
+
+void RenderEngine::angular_map_vertex(float x, float y) const
+{
+  static const float far_clip = 1.0e-6f - 1.0f;
+  float u, v;
+  float3 dir = cam.get_ray_dir(make_float2(x - 0.5f, y - 0.5f));
+  bgtex.project_direction(dir, u, v);
+  float3 texColor = tracer.get_background(dir);
+  glColor3fv(&texColor.x);
+  glTexCoord2f(u, v);
+  glVertex3f(x, y, far_clip);
+}
+
+void RenderEngine::draw_angular_map_strip(const float4& quad, float no_of_steps) const
+{
+  glBegin(GL_TRIANGLE_STRIP);
+  float ystep = quad.w - quad.y;
+  for(float y = quad.y; y < quad.w + ystep; y += ystep/no_of_steps)
+  {
+    angular_map_vertex(quad.x, y);
+    angular_map_vertex(quad.z, y);
+  }
+  glEnd();
+}
+
+void RenderEngine::draw_angular_map_tquad(float no_of_xsteps, float no_of_ysteps) const
+{
+  float xstep = 1.0f/no_of_xsteps;
+  for(float x = 0.0f; x < 1.0f + xstep; x += xstep)
+    draw_angular_map_strip(make_float4(x, 0.0f, x + xstep, 1.0f), no_of_ysteps);
+}
+
+void RenderEngine::draw_background() const
+{
+  if(!bgtex.has_texture())
+    return;
+
+  set_gl_ortho_proj();
+  glLoadIdentity();
+
+  if(bgtex.has_texture())
+  {
+    bgtex.bind();
+    bgtex.enable();
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  }
+  draw_angular_map_tquad(15.0f, 15.0f);
+  if(bgtex.has_texture())
+    bgtex.disable();
+
+  cam.glSetPerspective(win.x, win.y);
+  cam.glSetCamera();
 }
 
 void RenderEngine::draw_texture()
@@ -396,7 +508,10 @@ void RenderEngine::draw()
   if(shaders[current_shader] == &photon_caustics)
     tracer.draw_caustics_map();
   else
+  {
+    draw_background();
     scene.draw(); 
+  }
 }
 
 
@@ -406,6 +521,8 @@ void RenderEngine::draw()
 
 void RenderEngine::display()
 {
+  render_engine.readjust_camera();
+
   if(render_engine.is_done() || render_engine.is_tracing())
   {
     render_engine.set_gl_ortho_proj();
@@ -525,6 +642,25 @@ void RenderEngine::keyboard(unsigned char key, int x, int y)
       glutPostRedisplay();
     }
     break;
+    // Press 'L' to load a view saved in the file "view".
+  case 'L':
+  {
+    render_engine.load_view("view");
+    cout << "View loaded from file: view" << endl;
+    float3 eye, lookat, up;
+    render_engine.get_view_controller()->get_view_param(eye, lookat, up);
+    cout << "Eye   : " << eye << endl
+      << "Lookat: " << lookat << endl
+      << "Up    : " << up << endl
+      << "FOV   : " << render_engine.get_field_of_view() << endl;
+    glutPostRedisplay();
+  }
+  break;
+  // Press 'S' to save the current view in the file "view".
+  case 'S':
+    render_engine.save_view("view");
+    cout << "Current view stored in file: view" << endl;
+    break;
   // Press 'Z' to zoom out.
   case 'Z':
     {
@@ -540,6 +676,40 @@ void RenderEngine::keyboard(unsigned char key, int x, int y)
   // Press 'esc' to exit the program.
   case 27:
     exit(0);
+  }
+}
+
+void RenderEngine::mouse(int btn, int state, int x, int y)
+{
+  if(state == GLUT_DOWN)
+  {
+    if(btn == GLUT_LEFT_BUTTON)
+      render_engine.get_view_controller()->grab_ball(ORBIT_ACTION, make_uint2(x, y));
+    else if(btn == GLUT_MIDDLE_BUTTON)
+      render_engine.get_view_controller()->grab_ball(DOLLY_ACTION, make_uint2(x, y));
+    else if(btn == GLUT_RIGHT_BUTTON)
+      render_engine.get_view_controller()->grab_ball(PAN_ACTION, make_uint2(x, y));
+  }
+  else if(state == GLUT_UP)
+    render_engine.get_view_controller()->release_ball();
+
+  render_engine.set_mouse_state(state);
+}
+
+void RenderEngine::move(int x, int y)
+{
+  render_engine.get_view_controller()->roll_ball(make_uint2(x, y));
+  if(render_engine.get_mouse_state() == GLUT_DOWN)
+    glutPostRedisplay();
+}
+
+void RenderEngine::spin(int x)
+{
+  if(!render_engine.is_tracing())
+  {
+    if(render_engine.get_view_controller()->try_spin())
+      glutPostRedisplay();
+    glutTimerFunc(render_engine.get_spin_timer(), spin, 0);
   }
 }
 

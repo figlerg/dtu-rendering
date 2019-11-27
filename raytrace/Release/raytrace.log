@@ -1,8 +1,44 @@
-﻿  RayTracer.cpp
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\fresnel.h(38,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+﻿  BRDF.cpp
+  GLViewController.cpp
+  Holdout.cpp
+  MCGlossy.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file Holdout.cpp)
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file Holdout.cpp)
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MCGlossy.cpp)
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MCGlossy.cpp)
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file BRDF.cpp)
+  MerlShader.cpp
+  MerlTexture.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file BRDF.cpp)
+  PanoramicTexture.cpp
+  PathTracer.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\MCGlossy.cpp(43,9): warning C4101: 'R': unreferenced local variable
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MerlShader.cpp)
+  QuatTrackBall.cpp
+  Scene.cpp
+  ParticleTracer.cpp
+  RayCaster.cpp
+  RayTracer.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data (compiling source file MerlShader.cpp)
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\fresnel.h(38,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data (compiling source file RayTracer.cpp)
+  Glossy.cpp
+  GlossyVolume.cpp
+  Mirror.cpp
+  PhotonCaustics.cpp
+  Transparent.cpp
+  Volume.cpp
+  AreaLight.cpp
+  Directional.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\RayCaster.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
+  PointLight.cpp
+  RenderEngine.cpp
+  string_utils.cpp
+  HDRTexture.cpp
+  raytrace.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\AreaLight.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  1 of 1718 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    13 functions had inline decision re-evaluated but remain unchanged
+  710 of 1969 functions (36.1%) were compiled, the rest were copied from previous compilation.
+    246 functions were new in current compilation
+    278 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Release\raytrace.exe
