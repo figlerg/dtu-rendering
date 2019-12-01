@@ -20,7 +20,36 @@ bool AreaLight::sample(const float3& pos, float3& dir, float3& L) const
   const IndexedFaceSet& normals = mesh->normals;
   L = make_float3(0.0f);
 
-  float3 light_pos = mesh->compute_bbox().center();
+
+  //float3 light_pos = mesh->compute_bbox().center(); // original line
+  // if I understand correctly, here the sampling is not random but from the center?
+  // instead, choose a random triangle and then a random point on it
+
+  // choose one of the triangles in the mesh:
+  int n = mesh->geometry.no_faces();
+  float xi = mt_random()*n; // uniform distribution of [0,n]
+  int chosen = (int)xi % n; // this is now the index of the randomly chosen triangle
+   
+  // sample a random point on the triangle using barycentric coordinates
+  float xi1 = mt_random();
+  float xi2 = mt_random();
+
+  // these are the barycentric coordinates
+  float u = 1 - sqrtf(xi1);
+  float v = (1 - xi2) * sqrtf(xi1);
+  float w = xi2 * sqrtf(xi1);
+
+  // use them to get actual point in triangle
+  const uint3& geo_face = mesh->geometry.face(chosen); // like in trimesh.cpp
+  float3 light_pos = u * mesh->geometry.vertex(geo_face.x)+ v * mesh->geometry.vertex(geo_face.y)+ w * mesh->geometry.vertex(geo_face.z);
+
+
+  //const uint3& norm_face = mesh->normals.face(chosen);
+  //float
+
+  //float3 light_pos = normalize()
+
+
   float dist = length(light_pos - pos);
 
   dir = normalize(light_pos - pos);

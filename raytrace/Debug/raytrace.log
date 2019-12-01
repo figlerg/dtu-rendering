@@ -1,3 +1,4 @@
-﻿  Volume.cpp
+﻿  AreaLight.cpp
 cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\AreaLight.cpp(68,20): warning C4018: '<': signed/unsigned mismatch
   raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Debug\raytrace.exe

@@ -11,6 +11,7 @@ float3 rotate_vector(const float3& vector, const float3& axis, float angle)
 {
   // Implement quaternion-based rotation by an angle of a vector around an axis
   // Hint: RixShadingUtils.h has many useful helper functions (such as RixSinCos, Cross, Dot, and Normalize).
+	return make_float3(0.0f);
 }
 
 // Convert vectors in tangent space to half/difference coordinates
@@ -32,7 +33,8 @@ float3 lookup_brdf_val(const float* brdf, const float3& n, const float3& normali
   // to get input for the other version of the lookup_brdf_val function.
   // Hint: There is a built-in member function for 3-vectors called CreateOrthonormalBasis
   //       and a function called RixChangeBasisTo for change of basis.
-  return make_float3(0.0f);
+  
+	return make_float3(0.0f); // BY ME BECAUSE OF DEBUGGING PROBLEM
 }
 
 float3 integrate_brdf(float* brdf, unsigned int N)
