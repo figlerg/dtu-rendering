@@ -19,8 +19,10 @@ void vectors_to_half_diff_coords(const float3& in, const float3& out,
   float& theta_half, float& phi_half, float& theta_diff, float& phi_diff)
 {
   // compute halfway vector
+	float3 h = (in + out) / length(in + out);
 
   // compute theta_half, phi_half
+
 
   // compute diff vector
 

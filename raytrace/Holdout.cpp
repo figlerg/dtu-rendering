@@ -29,5 +29,19 @@ float3 Holdout::shade(const Ray& r, HitInfo& hit, bool emit) const
   //       a new ray in a direction sampled on the hemisphere around the
   //       surface normal according to the function sample_cosine_weighted(...).
 
-  return ambient*tracer->get_background(r.direction);
+  float accum = 0.0f;
+  for (int i = 0; i < samples; i++) {
+	  float3 dir = sample_cosine_weighted(hit.shading_normal);
+	  Ray sampled_r = Ray(hit.position, dir, 0, 1e-4,RT_DEFAULT_MAX);
+	  HitInfo sampled_hit = HitInfo();
+
+	  bool shadowed = tracer->trace_to_closest(sampled_r, sampled_hit);
+	  if (!shadowed) {
+		  accum += 1; 
+		  //accum += tracer->get_background(sampled_r.direction);
+	  }
+  }
+  ambient = accum / samples;
+
+  return ambient * tracer->get_background(r.direction);
 }

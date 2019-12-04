@@ -1,4 +1,5 @@
-﻿  AreaLight.cpp
+﻿  BRDF.cpp
 cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\AreaLight.cpp(68,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Debug\raytrace.exe

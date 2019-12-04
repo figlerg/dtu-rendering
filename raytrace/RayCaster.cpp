@@ -49,7 +49,9 @@ float3 RayCaster::compute_pixel(unsigned int x, unsigned int y) const
 			sum += get_shader(hit)->shade(some_ray, hit);
 		}
 		else {
-			sum += get_background(optix::make_float3((some_ray.direction.x + 1) / 2, (some_ray.direction.y + 1) / 2, (some_ray.direction.z + 1) / 2));
+			sum += get_background(some_ray.direction);
+
+			//sum += get_background(optix::make_float3((some_ray.direction.x + 1) / 2, (some_ray.direction.y + 1) / 2, (some_ray.direction.z + 1) / 2));
 		}
 
 	}

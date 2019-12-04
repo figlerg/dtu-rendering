@@ -58,6 +58,5 @@ float3 Lambertian::shade(const Ray& r, HitInfo& hit, bool emit) const
   result = final;
 
 
-
   return result + Emission::shade(r, hit, emit);
 }
