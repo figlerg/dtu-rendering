@@ -35,7 +35,7 @@ float3 RayCaster::compute_pixel(unsigned int x, unsigned int y) const
 
 
 
-	float3 sum;
+	float3 sum = make_float3(0.0f);
 	for (int i = 0; i < subdivs * subdivs; i++) {
 		float2 coords = make_float2(x, y) * win_to_ip + lower_left + jitter[i];
 		Ray some_ray = scene->get_camera()->get_ray(coords);
