@@ -18,14 +18,28 @@ void MerlTexture::load(const char* filename)
   brdf.resize(MERL_SIZE);
   if(!read_brdf(filename, &brdf[0], MERL_SIZE, rho_d))
     cerr << "Error reading file " << filename << endl;
-  printf("test");
-  M_matrix = initialize_M(&brdf[0], nr_bins);
-  marginal_pdf_matrix = initialize_marginal_densities(&brdf[0],nr_bins);
-  max_ratios = find_ratio_bound(marginal_pdf_matrix, nr_bins);
+  printf("\ntesting:\n");
   float theta_r = 0.21 * M_PIf;
   float theta_i = 0.35 * M_PIf;
   float phi_diff = 0.74 * M_PIf;
-  printf("\n Szenario1 (theta_r,theta_i,phi_diff) = (%f,%f,%f) => mdf = %f", theta_r, theta_i, phi_diff, read_matrix(marginal_pdf_matrix, theta_r, theta_i,nr_bins));
+  M_matrix = initialize_M(&brdf[0], nr_bins);
+  printf("%f", sample_phi_diff(theta_r,theta_i));
+  marginal_pdf_matrix = initialize_marginal_densities(&brdf[0],nr_bins);
+  max_ratios = find_ratio_bound(marginal_pdf_matrix, nr_bins);
+  printf("\n Szenario1 (theta_r,theta_i,phi_diff) = (%f,%f,%f) => mdf = %f", theta_r, theta_i, phi_diff, read_matrix(M_matrix, theta_i, theta_r,nr_bins));
+  float3 test_marg = lookup_brdf_val_2(&brdf[0], theta_i, -1.0f, theta_r, phi_diff);
+  printf("\nlookup_brdf:\n(%f,%f,%f)",test_marg.x,test_marg.y,test_marg.z);
+  printf("\nget_marginal_density:\n%f\n", get_marginal_density(&brdf[0], theta_r, theta_i, nr_bins));
+  for (int i = 0; i < nr_bins; i++) {
+	  for (int j = 0; j < nr_bins; j++) {
+		  printf("%.3f,", marginal_pdf_matrix[i][j]);
+	  }
+	  if (i > 20) {
+		  break;
+	  }
+	  printf("\n");
+  }
+  printf("%.3f,", max_ratios[3]);
   width = height = 1;
   channels = 3;
   data = (unsigned char *)malloc(width*height*channels);
@@ -124,7 +138,9 @@ float MerlTexture::sample_phi_diff(float theta_r, float theta_i) {
 
 	do {
 		u = mt_random();
-		phi_diff = mt_random() * M_PI_2f;
+		//u = 0.1;
+		phi_diff = mt_random() * M_PIf;
+		//phi_diff = 0.5f * M_PIf;
 		M = read_matrix(M_matrix, theta_i, theta_r, nr_bins);
 		float3 f = lookup_brdf_val_2(&brdf[0], theta_i, -1.0f, theta_r, phi_diff);
 		f_sum = f.x + f.y + f.z;

@@ -175,7 +175,7 @@ float** initialize_M(const float* brdf, int n_bins) {
 	// this order is kept in loops: from outer to inner
 
 	float theta_step = full_theta_i / n_bins; // same for both thetas
-	float phi_diff_step = full_phi_diff / n_bins;
+	float phi_diff_step = full_phi_diff / n_bins / 2;
 
 #pragma omp parallel for
 
@@ -184,7 +184,7 @@ float** initialize_M(const float* brdf, int n_bins) {
 		for (int j = 0; j < n_bins; j++) {
 			float max = 0.0f;
 
-			for (int k = 0; k < n_bins; k++) {
+			for (int k = 0; k < n_bins*2; k++) {
 				float theta_i = i * theta_step;
 				float theta_r = j * theta_step;
 				float phi_diff = k * phi_diff_step;
@@ -214,12 +214,10 @@ float** initialize_marginal_densities(const float* brdf, int n_bins) {
 
 	float full_theta_i = M_PI_2f; // 90 degrees
 	float full_theta_r = M_PI_2f; // 90 degrees
-	float full_phi_diff = M_PIf; // 180 degrees because the values are the same for the rest  of the circle (hopefully)
 
 	// this order is kept in loops: from outer to inner
 
 	float theta_step = full_theta_i / n_bins; // same for both thetas
-	float phi_diff_step = full_phi_diff / n_bins;
 
 #pragma omp parallel for
 
@@ -254,13 +252,13 @@ float get_marginal_density(const float* brdf, const float theta_r, const float t
 	// this order is kept in loops: from outer to inner
 
 	float theta_step = full_theta_i / n_bins; // same for both thetas
-	float phi_diff_step = full_phi_diff / n_bins;
+	float phi_diff_step = full_phi_diff / n_bins / 2;
 
 	float enumerator = 0.0f;
 	float denominator = 0.0f;
 
 			
-	for (int k = 0; k < n_bins; k++) {
+	for (int k = 0; k < n_bins * 2; k++) {
 		float phi_diff = k * phi_diff_step;
 
 		float3 f_rgb = lookup_brdf_val_2(brdf, theta_i, -1.0f, theta_r, phi_diff);
@@ -274,7 +272,7 @@ float get_marginal_density(const float* brdf, const float theta_r, const float t
 
 	for (int j = 0; j < n_bins; j++) {
 
-		for (int k = 0; k < n_bins; k++) {
+		for (int k = 0; k < n_bins * 2; k++) {
 			float phi_diff = k * phi_diff_step;
 			float theta_i_inner = j * theta_step;
 
