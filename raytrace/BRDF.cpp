@@ -297,8 +297,8 @@ float read_matrix(float** matrix, const float theta_i, const float theta_r, cons
 	float full_theta_i = M_PI_2f; // 90 degrees
 	float full_theta_r = M_PI_2f; // 90 degrees	
 
-	int i = (int)(theta_i * nr_bins / full_theta_i) % nr_bins;
-	int j = (int)(theta_r * nr_bins / full_theta_r) % nr_bins;
+	int i = ((int)(theta_i * nr_bins / full_theta_i)) % nr_bins;
+	int j = ((int)(theta_r * nr_bins / full_theta_r)) % nr_bins;
 
 	return matrix[i][j];
 
