@@ -22,6 +22,10 @@ void MerlTexture::load(const char* filename)
   M_matrix = initialize_M(&brdf[0], nr_bins);
   marginal_pdf_matrix = initialize_marginal_densities(&brdf[0],nr_bins);
   max_ratios = find_ratio_bound(marginal_pdf_matrix, nr_bins);
+  float theta_r = 0.21 * M_PIf;
+  float theta_i = 0.35 * M_PIf;
+  float phi_diff = 0.74 * M_PIf;
+  printf("\n Szenario1 (theta_r,theta_i,phi_diff) = (%f,%f,%f) => mdf = %f", theta_r, theta_i, phi_diff, read_matrix(marginal_pdf_matrix, theta_r, theta_i,nr_bins));
   width = height = 1;
   channels = 3;
   data = (unsigned char *)malloc(width*height*channels);
