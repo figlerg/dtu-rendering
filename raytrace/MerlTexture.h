@@ -24,10 +24,22 @@ public:
 
   optix::float3 brdf_lookup(const optix::float3& n, const optix::float3& normalized_wi, const optix::float3& normalized_wo) const;
 
+  // my functions for project
+
+  optix::float3 importance_sampler(const optix::float3 dir, const optix::float3 n);
+  float sample_theta_i(const float theta_r);
+  float sample_phi_diff(float theta_r, float theta_i);
+
 protected:
   // Pointers to image data
   std::vector<float> brdf;
   optix::float3 rho_d;
+
+  // new members for project!
+  int nr_bins = 100;
+  float** M_matrix;
+  float** marginal_pdf_matrix;
+  float* max_ratios;
 };
 
 #endif // MERLTEXTURE_H

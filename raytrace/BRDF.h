@@ -97,4 +97,12 @@ inline optix::float3 lookup_brdf_val(const float* brdf, float theta_half, float 
   return fmaxf(result, optix::make_float3(0.0f));
 }
 
+// my additions!
+float** initialize_M(const float* brdf, int n_bins);
+float** initialize_marginal_densities(const float* brdf,int n_bins);
+float get_marginal_density(const float* brdf, const float theta_r, const float theta_i, int n_bins);
+float read_matrix(float** matrix, const float theta_i, const float theta_r, const int nr_bins);
+optix::float3 lookup_brdf_val_2(const float* brdf, const float theta_i, const float phi_i, const float theta_o, const float phi_o);
+float* find_ratio_bound(float ** marginal_densities, int nr_bins);
+optix::Matrix3x3 get_trafo(optix::float3 n);
 #endif // BRDF_H

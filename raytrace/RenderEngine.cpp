@@ -60,9 +60,11 @@ RenderEngine::RenderEngine()
     use_default_light(false),                                 // Choose whether to use the default light or not
     shadows_on(true),
     background(optix::make_float3(0.1f, 0.3f, 0.6f)),        // Background color
-    //bgtex_filename("C:\\Users\\Felix\\Desktop\\Skripten\\Erasmus2019\\Rendering\\hdri\\railway_bridges_4k.hdr"),                                      // Background texture file name
+    bgtex_filename("C:\\Users\\Felix\\Desktop\\Skripten\\Erasmus2019\\Rendering\\hdri\\railway_bridges_4k.hdr"),                                      // Background texture file name
 	//bgtex_filename("C:\\Users\\Felix\\Desktop\\Skripten\\Erasmus2019\\Rendering\\hdri\\shanghai_bund_4k.hdr"),                                      // Background texture file name
-	bgtex_filename("C:\\Users\\Felix\\Desktop\\Skripten\\Erasmus2019\\Rendering\\hdri\\colorful_studio_4k.hdr"),                                      // Background texture file name
+	//bgtex_filename("C:\\Users\\Felix\\Desktop\\Skripten\\Erasmus2019\\Rendering\\hdri\\colorful_studio_4k.hdr"),                                      // Background texture file name
+	//bgtex_filename("C:\\Users\\Felix\\Desktop\\Skripten\\Erasmus2019\\Rendering\\hdri\\kloetzle_blei_4k.hdr"),                                      // Background texture file name
+	//bgtex_filename("C:\\Users\\Felix\\Desktop\\Skripten\\Erasmus2019\\Rendering\\hdri\\autumn_park_4k.hdr"),                                      // Background texture file name
 	current_shader(0),
     lambertian(scene.get_lights()),
     photon_caustics(&tracer, scene.get_lights(), 1.0f, 50),  // Max distance and number of photons to search for

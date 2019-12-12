@@ -26,6 +26,10 @@
     </LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Bunny|Win32'">
+    <LocalDebuggerCommandArguments>C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\models\Bunny.obj</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Cornell|Win32'">
     <LocalDebuggerCommandArguments>C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\models\CornellBox.obj C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\models\CornellBlocks.obj</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>

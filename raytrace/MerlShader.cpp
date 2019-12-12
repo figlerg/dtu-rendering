@@ -41,5 +41,35 @@ float3 MerlShader::shade(const Ray& r, HitInfo& hit, bool emit) const
   //       the measured BRDF for a given light-view configuration. Ensure
   //       that tex is non-zero and has texture before using it.
 
+  if (!tex) return result; // if it's either 0 or has no texture this is true
+
+  float P_r = (rho_d.x + rho_d.y + rho_d.z) / 3; // probability of reflection? 
+  float xi = mt_random();
+
+  
+  if (xi <= P_r) {
+	  //float3 dir = sample_cosine_weighted(hit.shading_normal);
+	  float3 dir = tex->importance_sampler(-normalize(r.direction), normalize(hit.shading_normal));
+	  if (dir.x == -1000.0f) {
+		  return result;
+	  }
+
+	  Ray r_out = Ray(hit.position, dir, 0, 1e-04, RT_DEFAULT_MAX);
+	  HitInfo hit_out = HitInfo();
+
+	  hit_out.trace_depth = hit.trace_depth + 1;
+	  float3 reflection = shade_new_ray(r_out, hit_out, emit);
+
+	  float3 brdf_val = tex->brdf_lookup(hit.shading_normal, -r.direction, dir);
+
+	  result = M_PIf * reflection * brdf_val / P_r;
+  }
+  // else it stays zero because of absorption
+  
+  //result = tex->brdf_lookup(hit.shading_normal,r.direction,)
+
+
+
+
   return result;
 }

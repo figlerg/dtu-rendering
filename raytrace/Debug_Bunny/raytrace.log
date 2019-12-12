@@ -1,0 +1,74 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  raytrace.cpp
+  Texture.cpp
+  SphereTexture.cpp
+  InvSphereMap.cpp
+  HDRTexture.cpp
+  Gamma.cpp
+  TriMesh.cpp
+  obj_load.cpp
+  BspTree.cpp
+  Accelerator.cpp
+  Triangle.cpp
+  Sphere.cpp
+  Plane.cpp
+  Randomizer.cpp
+  string_utils.cpp
+  RenderEngine.cpp
+  PointLight.cpp
+  Directional.cpp
+  AreaLight.cpp
+cl : command line warning D9030: '/Gm' is incompatible with multiprocessing; ignoring /MP switch
+  Volume.cpp
+  Generating Code...
+  Compiling...
+  Transparent.cpp
+  Textured.cpp
+  PhotonCaustics.cpp
+  Phong.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\AreaLight.cpp(68,20): warning C4018: '<': signed/unsigned mismatch
+  Mirror.cpp
+  Lambertian.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\Phong.cpp(43,21): warning C4018: '<': signed/unsigned mismatch
+  GlossyVolume.cpp
+  Glossy.cpp
+  RayTracer.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\Lambertian.cpp(40,21): warning C4018: '<': signed/unsigned mismatch
+  RayCaster.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\fresnel.h(38,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  ParticleTracer.cpp
+  Scene.cpp
+  QuatTrackBall.cpp
+  PathTracer.cpp
+  PanoramicTexture.cpp
+  MerlTexture.cpp
+  MerlShader.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\RayCaster.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  MCGlossy.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Holdout.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\MCGlossy.cpp(43,9): warning C4101: 'R': unreferenced local variable
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  GLViewController.cpp
+  Generating Code...
+  Compiling...
+  Camera.cpp
+  BRDF.cpp
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\Holdout.cpp(33,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(61,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\sampler.h(62,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\BRDF.cpp(111,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\BRDF.cpp(211,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\BRDF.cpp(224,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\BRDF.cpp(226,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\BRDF.cpp(245,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\BRDF.cpp(262,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\BRDF.cpp(274,20): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\raytrace\BRDF.cpp(276,21): warning C4018: '<': signed/unsigned mismatch
+BRDF.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  raytrace.vcxproj -> C:\Users\Felix\Desktop\Skripten\Erasmus2019\Rendering\take2\render02562\Debug_Bunny\raytrace.exe
