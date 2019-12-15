@@ -118,12 +118,12 @@ float3 integrate_brdf(float* brdf, unsigned int N)
 
   sum *= M_PIf / (float) N;
 
-  printf("\n rho_d = ( %f, %f, %f )\n", sum.x, sum.y, sum.z);
+  //printf("\n rho_d = ( %f, %f, %f )\n", sum.x, sum.y, sum.z);
 
   float3 sample1 = normalize(make_float3(0.0f, 0.3f, 1.0f));
   float3 sample2 = normalize(make_float3(0.0f, -0.3f, 1.0f));
   float3 test_lookup = lookup_brdf_val(brdf, n, sample1, sample2);
-  printf("\n lookup : %f, %f, %f", test_lookup.x, test_lookup.y, test_lookup.z);
+  //printf("\n lookup : %f, %f, %f", test_lookup.x, test_lookup.y, test_lookup.z);
 
 
   // Implement Monte Carlo integration to estimate the bihemisphercial diffuse reflectance (rho).
@@ -197,11 +197,11 @@ float** initialize_M(const float* brdf, int n_bins) {
 
 			result[i][j] = max;
 		}
-		printf("%i", i);
+		//printf("%i", i);
 
 	}
 
-	printf("M-Matrix for importance sampling initialized");
+	//printf("M-Matrix for importance sampling initialized");
 	return result;
 }
 
@@ -295,8 +295,16 @@ float read_matrix(float** matrix, const float theta_i, const float theta_r, cons
 	float full_theta_i = M_PI_2f; // 90 degrees
 	float full_theta_r = M_PI_2f; // 90 degrees	
 
-	int i = ((int)(theta_i * nr_bins / full_theta_i)) % nr_bins;
-	int j = ((int)(theta_r * nr_bins / full_theta_r)) % nr_bins;
+
+
+	int i = ((int)(theta_i * nr_bins / full_theta_i));
+	int j = ((int)(theta_r * nr_bins / full_theta_r));
+
+	//if (i >= nr_bins) throw invalid_argument("i too high");
+	//if (j >= nr_bins) throw invalid_argument("j too high");
+	if (i >= nr_bins) i = 2 * nr_bins - i;
+	if (j >= nr_bins) j = 2 * nr_bins - j;// we handle it like this because modulo would induce a discontinuity (?)
+
 
 	return matrix[i][j];
 
@@ -326,3 +334,94 @@ float* find_ratio_bound(float ** marginal_densities, int nr_bins) {
 	return max_stored; 
 }
 
+float*** initialize_pdf(const float* brdf, int n_bins) {
+	float full_theta_i = M_PI_2f; // 90 degrees
+	float full_theta_r = M_PI_2f; // 90 degrees
+	float full_phi_diff = M_PIf; // 180 degrees because the values are the same for the rest  of the circle (hopefully)
+
+	// this order is kept in loops: from outer to inner
+
+	float theta_step = full_theta_i / n_bins; // same for both thetas
+	float phi_diff_step = full_phi_diff / n_bins / 2;
+
+	auto*** result = new float** [n_bins];
+
+#pragma omp parallel for
+	for (int i = 0; i < n_bins; i++) { // theta_i
+		result[i] = new float* [n_bins];
+		for (int j = 0; j < n_bins; j++) { // theta_r
+			result[i][j] = new float[2 * n_bins];
+			float denominator = get_denominator(brdf, theta_step * j, n_bins); // TODO swap loops, this is not efficient
+			for (int k = 0; k < 2 * n_bins; k++) { // phi_diff
+				float3 f = lookup_brdf_val_2(brdf, i * theta_step, -1.0f, j * theta_step, k * phi_diff_step);
+				result[i][j][k] = (f.x + f.y + f.z) / denominator;
+				//result[i][j][k] = denominator;
+			}
+		}
+		printf("%i", i);
+	}
+
+	printf("\n 3d pdf matrix initialized");
+	return result;
+}
+
+float get_denominator(const float* brdf, const float theta_r, int n_bins) {
+
+	float full_theta_i = M_PI_2f; // 90 degrees
+	float full_theta_r = M_PI_2f; // 90 degrees
+	float full_phi_diff = M_PIf; // 180 degrees because the values are the same for the rest  of the circle (hopefully)
+
+	// this order is kept in loops: from outer to inner
+
+	float theta_step = full_theta_i / n_bins; // same for both thetas
+	float phi_diff_step = full_phi_diff / n_bins / 2;
+
+	float denominator = 0.0f;
+
+	for (int j = 0; j < n_bins; j++) {
+
+		for (int k = 0; k < n_bins * 2; k++) {
+			float phi_diff = k * phi_diff_step;
+			float theta_i_inner = j * theta_step;
+
+			float3 f_rgb = lookup_brdf_val_2(brdf, theta_i_inner, -1.0f, theta_r, phi_diff);
+			float f_sum = f_rgb.x + f_rgb.y + f_rgb.z;
+			f_sum *= cosf(theta_i_inner);
+
+			denominator += f_sum;
+		}
+
+	}
+
+	denominator *= theta_step * phi_diff_step;
+
+	return denominator;
+
+}
+
+float read_matrix_3d(float*** matrix, const float theta_i, const float theta_r, const float phi_diff, const int nr_bins) {
+	float full_theta_i = M_PI_2f; // 90 degrees
+	float full_theta_r = M_PI_2f; // 90 degrees	
+	float full_phi_diff = M_PIf; // 180 degrees because the values are the same for the rest  of the circle (hopefully)
+
+
+	int i = ((int)(theta_i * nr_bins / full_theta_i)) ;
+	int j = ((int)(theta_r * nr_bins / full_theta_r)) ;
+	int k = ((int)(phi_diff * nr_bins / full_phi_diff)) ;
+
+	if (i >= nr_bins) i = 2 * nr_bins - i;
+	if (j >= nr_bins) j = 2 * nr_bins - j;// we handle it like this because modulo would induce a discontinuity (?)
+	if (k >= nr_bins) k = 2 * nr_bins - k;
+
+	if (i >= nr_bins) throw invalid_argument("i too high");
+	if (j >= nr_bins) throw invalid_argument("j too high");
+	if (k >= 2*nr_bins) throw invalid_argument("k too high");
+
+
+	//printf("\n (i,j,k) = (%i,%i,%i)", i, j, k);
+	if (i < 0 || j < 0 || k < 0) throw std::invalid_argument("Index < 0 in read_matrix");
+
+
+	return matrix[i][j][k];
+
+}

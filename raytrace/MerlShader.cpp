@@ -9,6 +9,7 @@
 #include "ObjMaterial.h"
 #include "MerlTexture.h"
 #include "MerlShader.h"
+#include "BRDF.h"
 
 using namespace optix;
 
@@ -48,9 +49,11 @@ float3 MerlShader::shade(const Ray& r, HitInfo& hit, bool emit) const
 
   
   if (xi <= P_r) {
+	  float pdf_val = 0.0f;
+
 	  //float3 dir = sample_cosine_weighted(hit.shading_normal);
-	  float3 dir = tex->importance_sampler(-normalize(r.direction), normalize(hit.shading_normal));
-	  if (dir.x == -1000.0f) {
+	  float3 dir = normalize(tex->importance_sampler(-normalize(r.direction), normalize(hit.shading_normal), pdf_val));
+	  if (dir.x < -10.0f) {
 		  return result;
 	  }
 
@@ -62,7 +65,9 @@ float3 MerlShader::shade(const Ray& r, HitInfo& hit, bool emit) const
 
 	  float3 brdf_val = tex->brdf_lookup(hit.shading_normal, -r.direction, dir);
 
-	  result = M_PIf * reflection * brdf_val / P_r;
+	  //result = reflection * brdf_val / P_r / pdf_val; // division: cos cancels out with pdf cos!
+	  result = reflection * brdf_val * dot(hit.shading_normal, dir) / P_r ; // division: cos cancels out with pdf cos!
+	  //result = reflection * brdf_val * dot(hit.shading_normal, dir) / P_r / pdf_val;
   }
   // else it stays zero because of absorption
   

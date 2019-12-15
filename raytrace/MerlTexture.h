@@ -26,9 +26,15 @@ public:
 
   // my functions for project
 
-  optix::float3 importance_sampler(const optix::float3 dir, const optix::float3 n);
+  optix::float3 importance_sampler(const optix::float3 dir, const optix::float3 n, float &pdf_val);
   float sample_theta_i(const float theta_r);
   float sample_phi_diff(float theta_r, float theta_i);
+  float safe_acosf(float x) const;
+
+  // MINE
+  float*** pdf_matrix; // saved values of conditional probabilities for triple of all three angles
+
+
 
 protected:
   // Pointers to image data
